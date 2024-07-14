@@ -2,14 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: var(--tg-theme-bg-color);
+:root {
+  --tg-theme-bg-color: rgb(194, 194, 194);
+  --tg-theme-secondary-bg-color: rgb(255, 255, 255);
+  --tg-theme-subtitle-text-color: #303030;
+  --tg-theme-button-color: #5576d9;
+  --tg-theme-hint-color: #595959;
 }
 
-.tg-bg-color {
+.bg-ios-light-surface,
+.bg-ios-dark-surface,
+.bg-md-light-surface,
+.bg-md-dark-surface {
   background-color: var(--tg-theme-bg-color);
-}
-
-.tg-header-bg-color {
-  background-color: var(--tg-theme-header-bg-color);
 }

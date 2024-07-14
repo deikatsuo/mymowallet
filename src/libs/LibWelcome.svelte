@@ -14,7 +14,7 @@
   storeTitle.subscribe((val) => (title = val));
 </script>
 
-<Navbar {title} colors={{ bgIos: "tg-header-bg-color", bgMaterial: "tg-header-bg-color" }}></Navbar>
+<Navbar {title}></Navbar>
 
 <Router>
   <Route path="/" component={PageWelcome} />

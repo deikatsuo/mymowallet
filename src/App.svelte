@@ -27,7 +27,7 @@
 </svelte:head>
 
 <App theme="material">
-  <Page colors={{ bgIos: "tg-bg-color", bgMaterial: "tg-bg-color" }}>
+  <Page>
     {#if seed}
       <LibApp />
     {:else}
