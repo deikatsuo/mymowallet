@@ -6,7 +6,7 @@
   import LibApp from "./libs/LibApp.svelte";
   import LibWelcome from "./libs/LibWelcome.svelte";
 
-  import { storeTitle, storeActiveTab } from "./stores.js";
+  import { storeTitle, storeActiveTab } from "./stores";
 
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
@@ -18,14 +18,8 @@
   storeTitle.subscribe((val) => (title = val));
   storeActiveTab.subscribe((val) => (activeTab = val));
 
+  let seed = localStorage.seed;
   let wallet = localStorage.wallet;
-
-  import { bytesToHex, randomBytes } from "@noble/hashes/utils";
-  let saltByte = randomBytes(32);
-  let salt = bytesToHex(saltByte);
-  console.log(saltByte);
-  console.log(salt);
-
 </script>
 
 <svelte:head>
@@ -33,8 +27,8 @@
 </svelte:head>
 
 <App theme="material">
-  <Page>
-    {#if wallet}
+  <Page colors={{ bgIos: "tg-bg-color", bgMaterial: "tg-bg-color" }}>
+    {#if seed}
       <LibApp />
     {:else}
       <LibWelcome />

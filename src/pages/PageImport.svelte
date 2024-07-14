@@ -14,6 +14,7 @@
   } from "konsta/svelte";
 
   import { storeTitle } from "../stores.js";
+  import { encryptString, decryptString, generateSalt } from "../utils.js";
 
   storeTitle.set("Import Mo Wallet");
 
@@ -39,6 +40,7 @@
   };
 
   function importNow() {
+    seedValue = seedValue.trim();
     if (!seedValue) {
       alertMessage = "Please input Mnemonic phrase!";
       alertOpened = true;
@@ -48,14 +50,24 @@
   }
 
   function importFromSeed() {
+    passwordValue = passwordValue.replace(/\\s/g, "");
     if (!passwordValue) {
       alertMessage = "Please input a password!";
       alertOpened = true;
       return;
     }
-    seedValue = seedValue.trim();
-    let salt = bcrypt.randomBytes(16);
-    alert(salt);
+
+    console.log("Before Password ", passwordValue);
+    console.log("Before Seed ", seedValue);
+
+    let salt = generateSalt();
+    let password = encryptString(passwordValue, salt);
+    let seed = encryptString(seedValue, password);
+
+    localStorage.salt = salt;
+    localStorage.seed = seed;
+
+    navigate("/");
   }
 </script>
 

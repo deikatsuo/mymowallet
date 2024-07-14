@@ -1,7 +1,14 @@
 <script>
   import { Router, Route, navigate } from "svelte-routing";
 
-  import { Navbar, Icon, Link, Tabbar, TabbarLink } from "konsta/svelte";
+  import {
+    Navbar,
+    Toolbar,
+    Icon,
+    Link,
+    Tabbar,
+    TabbarLink,
+  } from "konsta/svelte";
 
   import MdHistory from "../components/MdHistory.svelte";
   import MdWallet from "../components/MdWallet.svelte";
@@ -11,21 +18,24 @@
   import PageWallet from "../pages/PageWallet.svelte";
   import PageStaking from "../pages/PageStaking.svelte";
   import PageSetting from "../pages/PageSetting.svelte";
+  import PageNotFound from "../pages/PageNotFound.svelte";
 
-  import { storeActiveTab } from "../stores.js";
+  import { storeActiveTab, storeTitle } from "../stores.js";
 
   let activeTab;
+  let title;
 
   storeActiveTab.subscribe((val) => (activeTab = val));
+  storeTitle.subscribe((val) => (title = val));
 </script>
 
-<Navbar>
-  <Link navbar iconOnly slot="right">
+<Toolbar class={`left-0 w-full`}>
+  <Link iconOnly>
     <Icon badge="0" badgeColors={{ bg: "bg-red-500" }}>
       <MdHistory class="w-6 h-6" />
     </Icon>
   </Link>
-</Navbar>
+</Toolbar>
 
 <Tabbar labels icons class="left-0 bottom-0 fixed">
   <TabbarLink
@@ -61,4 +71,5 @@
   <Route path="/" component={PageWallet} />
   <Route path="/staking" component={PageStaking} />
   <Route path="/setting" component={PageSetting} />
+  <Route component={PageNotFound} />
 </Router>

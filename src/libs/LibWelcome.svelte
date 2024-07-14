@@ -5,6 +5,7 @@
   import PageWelcome from "../pages/PageWelcome.svelte";
   import PageImport from "../pages/PageImport.svelte";
   import PageCreate from "../pages/PageCreate.svelte";
+  import PageNotFound from "../pages/PageNotFound.svelte";
 
   import { storeTitle } from "../stores";
 
@@ -19,4 +20,5 @@
   <Route path="/" component={PageWelcome} />
   <Route path="/import" component={PageImport} />
   <Route path="/create" component={PageCreate} />
+  <Route component={PageNotFound} />
 </Router>
