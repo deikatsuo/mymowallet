@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: var(--tg-theme-bg-color);
+}
+
 .tg-bg-color {
-    background-color: var(--tg-theme-bg-color);
+  background-color: var(--tg-theme-bg-color);
+}
+
+.tg-header-bg-color {
+  background-color: var(--tg-theme-header-bg-color);
 }
