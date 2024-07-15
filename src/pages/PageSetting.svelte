@@ -2,7 +2,7 @@
   import WebApp from "@twa-dev/sdk";
   import { Block, BlockTitle, Button } from "konsta/svelte";
 
-  import { storeTitle, storeActiveTab } from "../stores.js";
+  import { storeTitle, storeActiveTab, storeLogin } from "../stores.js";
   import { navigate } from "svelte-routing";
 
   storeTitle.set("Setting");
@@ -12,6 +12,7 @@
 
   function destroy() {
     localStorage.clear();
+    storeLogin.set(localStorage.login);
     navigate("/");
   }
 </script>

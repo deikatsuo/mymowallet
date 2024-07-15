@@ -13,7 +13,7 @@
     DialogButton,
   } from "konsta/svelte";
 
-  import { storeTitle } from "../stores.js";
+  import { storeLogin, storeTitle } from "../stores.js";
   import { encryptString, decryptString, generateSalt } from "../utils.js";
 
   storeTitle.set("Import Mo Wallet");
@@ -66,6 +66,8 @@
 
     localStorage.salt = salt;
     localStorage.seed = seed;
+    localStorage.login = true;
+    storeLogin.set(localStorage.login);
 
     navigate("/");
   }

@@ -6,7 +6,7 @@
   import LibApp from "./libs/LibApp.svelte";
   import LibWelcome from "./libs/LibWelcome.svelte";
 
-  import { storeTitle, storeActiveTab } from "./stores";
+  import { storeTitle, storeActiveTab, storeLogin } from "./stores";
 
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
@@ -14,9 +14,11 @@
 
   let title;
   let activeTab;
+  let isLogin;
 
   storeTitle.subscribe((val) => (title = val));
   storeActiveTab.subscribe((val) => (activeTab = val));
+  storeLogin.subscribe((val) => (isLogin = val));
 
   let seed = localStorage.seed;
   let wallet = localStorage.wallet;
@@ -28,7 +30,7 @@
 
 <App theme="material">
   <Page>
-    {#if seed}
+    {#if isLogin}
       <LibApp />
     {:else}
       <LibWelcome />

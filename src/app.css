@@ -2,17 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --tg-theme-bg-color: rgb(194, 194, 194);
-  --tg-theme-secondary-bg-color: rgb(255, 255, 255);
-  --tg-theme-subtitle-text-color: #303030;
-  --tg-theme-button-color: #5576d9;
-  --tg-theme-hint-color: #595959;
-}
-
-.bg-ios-light-surface,
-.bg-ios-dark-surface,
-.bg-md-light-surface,
-.bg-md-dark-surface {
-  background-color: var(--tg-theme-bg-color);
-}
