@@ -1,5 +1,6 @@
 <script>
   import WebApp from "@twa-dev/sdk";
+  import { Mnemonic, Wallet } from "ethers";
   import { navigate } from "svelte-routing";
 
   import {
@@ -13,8 +14,9 @@
     DialogButton,
   } from "konsta/svelte";
 
+  import MdPasswordAdd from "../components/MdPasswordAdd.svelte";
   import { storeLogin, storeTitle } from "../stores.js";
-  import { encryptString, decryptString, generateSalt } from "../utils.js";
+  import { buildWalletFromSeed, encryptString, generateSalt } from "../utils.js";
 
   storeTitle.set("Import Mo Wallet");
 
@@ -46,6 +48,14 @@
       alertOpened = true;
       return;
     }
+
+    let isValidSeed = Mnemonic.isValidMnemonic(seedValue);
+    if (!isValidSeed) {
+      alertMessage = "Mnemonic phrase is invalid!";
+      alertOpened = true;
+      return;
+    }
+
     askPassword = true;
   }
 
@@ -57,17 +67,7 @@
       return;
     }
 
-    console.log("Before Password ", passwordValue);
-    console.log("Before Seed ", seedValue);
-
-    let salt = generateSalt();
-    let password = encryptString(passwordValue, salt);
-    let seed = encryptString(seedValue, password);
-
-    localStorage.salt = salt;
-    localStorage.seed = seed;
-    localStorage.login = true;
-    storeLogin.set(localStorage.login);
+    buildWalletFromSeed(seedValue, passwordValue);
 
     navigate("/");
   }
@@ -104,7 +104,9 @@
         placeholder="****"
         value={passwordValue}
         onInput={onPasswordValueChange}
-      ></ListInput>
+      >
+        <MdPasswordAdd slot="media" />
+      </ListInput>
     </List>
     <Block margin="my-4">
       <div class="grid grid-cols-2 gap-x-4">

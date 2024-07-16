@@ -1,5 +1,7 @@
 import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
+import { storeActiveWallet, storeLogin, storeWallet, storeWallets } from "./stores";
+import { Wallet } from "ethers";
 
 export function generateSalt() {
   let saltByte = ethers.randomBytes(32);
@@ -14,4 +16,52 @@ export function encryptString(string, salt) {
 export function decryptString(cipher, salt) {
   let string = CryptoJS.AES.decrypt(cipher, salt);
   return string.toString(CryptoJS.enc.Utf8);
+}
+
+export function buildWalletFromSeed(seed, password) {
+  let salt = generateSalt();
+  let encPassword = encryptString(password, salt);
+  let encSeed = encryptString(seed, encPassword);
+
+  let wallet = Wallet.fromPhrase(seed);
+  storeWallet.set(wallet);
+  addWallet(wallet.address);
+  setActiveWallet(wallet.address);
+  localStorage.salt = salt;
+  localStorage.seed = encSeed;
+  localStorage.login = true;
+  storeLogin.set(localStorage.login);
+}
+
+export function addWallet(address, type = "parent", number = -1, key = "") {
+  let wallet = {
+    address: address,
+    type: type,
+    number: number,
+    key: key,
+  };
+  let wallets = localStorage.wallets;
+  if (wallets) {
+    wallets.push(wallet);
+  } else {
+    wallets = [wallet];
+  }
+  localStorage.wallets = wallets;
+  storeWallets.set(localStorage.wallets);
+}
+
+export function setActiveWallet(
+  address,
+  type = "parent",
+  number = -1,
+  key = ""
+) {
+  let activeWallet = {
+    address: address,
+    type: type,
+    number: number,
+    key: key,
+  };
+  localStorage.active = activeWallet;
+  storeActiveWallet.set(localStorage.active);
 }

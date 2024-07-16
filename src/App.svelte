@@ -6,7 +6,12 @@
   import LibApp from "./libs/LibApp.svelte";
   import LibWelcome from "./libs/LibWelcome.svelte";
 
-  import { storeTitle, storeActiveTab, storeLogin } from "./stores";
+  import {
+    storeTitle,
+    storeActiveTab,
+    storeLogin,
+    storeWallet,
+  } from "./stores";
 
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
@@ -20,8 +25,8 @@
   storeActiveTab.subscribe((val) => (activeTab = val));
   storeLogin.subscribe((val) => (isLogin = val));
 
-  let seed = localStorage.seed;
-  let wallet = localStorage.wallet;
+  let wallet = ethers.HDNodeWallet;
+  storeWallet.subscribe((val) => (wallet = val));
 </script>
 
 <svelte:head>
