@@ -43,11 +43,7 @@
   let passwordValue = "";
 
   storePasswordValue.subscribe((val) => (passwordValue = val));
-
-  // const onPasswordValueChange = (e) => {
-  //   passwordValue = e.target.value;
-  // };
-
+  
   function importNow() {
     seedValue = seedValue.trim();
     if (!seedValue) {
@@ -101,28 +97,3 @@
 <Block inset>
   <Button onClick={() => importNow()}>Import Now</Button>
 </Block>
-
-<!-- <Sheet class="pb-safe w-full" opened={askPassword}>
-  <Block>
-    <List>
-      <ListInput
-        outline
-        label="Input Password"
-        type="password"
-        placeholder="****"
-        value={passwordValue}
-        onInput={onPasswordValueChange}
-      >
-        <MdPasswordAdd slot="media" />
-      </ListInput>
-    </List>
-    <Block margin="my-4">
-      <div class="grid grid-cols-2 gap-x-4">
-        <Button class="bg-red-500" onClick={() => (askPassword = false)}>
-          Cancel
-        </Button>
-        <Button onClick={() => importFromSeed()}>Set Password</Button>
-      </div>
-    </Block>
-  </Block>
-</Sheet> -->
