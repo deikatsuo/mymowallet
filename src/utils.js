@@ -1,7 +1,20 @@
 import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
-import { storeActiveWallet, storeLogin, storeWallet, storeWallets } from "./stores";
+import {
+  storeActiveWallet,
+  storeLogin,
+  storeMain,
+  storeWallet,
+  storeWallets,
+} from "./stores";
 import { Wallet } from "ethers";
+
+export const moProvider = ethers.getDefaultProvider("https://mainnet-rpc.mochain.app");
+
+let main = ethers.HDNodeWallet;
+storeMain.subscribe((val) => {
+  main = val;
+});
 
 export function generateSalt() {
   let saltByte = ethers.randomBytes(32);
@@ -18,18 +31,35 @@ export function decryptString(cipher, salt) {
   return string.toString(CryptoJS.enc.Utf8);
 }
 
-export function buildWalletFromSeed(seed, password) {
+export function encryptAndBuild(seed, password) {
   let salt = generateSalt();
   let encPassword = encryptString(password, salt);
   let encSeed = encryptString(seed, encPassword);
 
-  let wallet = Wallet.fromPhrase(seed);
-  storeWallet.set(wallet);
-  addWallet(wallet.address);
-  setActiveWallet(wallet.address);
   localStorage.salt = salt;
   localStorage.seed = encSeed;
   localStorage.login = true;
+
+  buildWalletFromSeed(seed);
+}
+
+export function decryptAndBuild(password) {
+  let salt = localStorage.salt;
+  let seed = localStorage.seed;
+
+  let encPassword = encryptString(password, salt);
+  let decSeed = decryptString(seed, encPassword);
+
+  buildWalletFromSeed(decSeed);
+}
+
+export function buildWalletFromSeed(seed) {
+  let wallet = Wallet.fromPhrase(seed, moProvider);
+  storeMain.set(wallet);
+
+  addWallet(wallet.address);
+  setActiveWallet(wallet.address);
+  
   storeLogin.set(localStorage.login);
 }
 
@@ -62,6 +92,15 @@ export function setActiveWallet(
     number: number,
     key: key,
   };
+  if (type === "parent") {
+    storeWallet.set(main);
+  } else if (type === "child") {
+    storeWallet.set(main.deriveChild(0));
+  } else {
+    storeWallet.set(new ethers.Wallet(key, moProvider));
+  }
+
+
   localStorage.active = activeWallet;
   storeActiveWallet.set(localStorage.active);
 }

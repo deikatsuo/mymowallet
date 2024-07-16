@@ -15,15 +15,22 @@
   } from "konsta/svelte";
 
   import MdPasswordAdd from "../components/MdPasswordAdd.svelte";
-  import { storeLogin, storeTitle } from "../stores.js";
-  import { buildWalletFromSeed, encryptString, generateSalt } from "../utils.js";
+  import {
+    storeAlertMessage,
+    storeAlertOpened,
+    storeAskPassword,
+    storeCallback,
+    storeLogin,
+    storePasswordValue,
+    storeTitle,
+  } from "../stores.js";
+  import { encryptAndBuild, encryptString, generateSalt } from "../utils.js";
 
   storeTitle.set("Import Mo Wallet");
 
   WebApp.BackButton.onClick(() => navigate("/"));
   WebApp.BackButton.show();
 
-  let alertMessage = "";
   let seedValue = "";
 
   const onSeedValueChange = (e) => {
@@ -34,40 +41,41 @@
   };
 
   let passwordValue = "";
-  let askPassword = false;
-  let alertOpened = false;
 
-  const onPasswordValueChange = (e) => {
-    passwordValue = e.target.value;
-  };
+  storePasswordValue.subscribe((val) => (passwordValue = val));
+
+  // const onPasswordValueChange = (e) => {
+  //   passwordValue = e.target.value;
+  // };
 
   function importNow() {
     seedValue = seedValue.trim();
     if (!seedValue) {
-      alertMessage = "Please input Mnemonic phrase!";
-      alertOpened = true;
+      storeAlertMessage.set("Please input Mnemonic phrase!");
+      storeAlertOpened.set(true);
       return;
     }
 
     let isValidSeed = Mnemonic.isValidMnemonic(seedValue);
     if (!isValidSeed) {
-      alertMessage = "Mnemonic phrase is invalid!";
-      alertOpened = true;
+      storeAlertMessage.set("Mnemonic phrase is invalid!");
+      storeAlertOpened.set(true);
       return;
     }
 
-    askPassword = true;
+    storeAskPassword.set(true);
+    storeCallback.set(importFromSeed);
   }
 
   function importFromSeed() {
     passwordValue = passwordValue.replace(/\\s/g, "");
     if (!passwordValue) {
-      alertMessage = "Please input a password!";
-      alertOpened = true;
+      storeAlertMessage.set("Please input a password!");
+      storeAlertOpened.set(true);
       return;
     }
 
-    buildWalletFromSeed(seedValue, passwordValue);
+    encryptAndBuild(seedValue, passwordValue);
 
     navigate("/");
   }
@@ -94,7 +102,7 @@
   <Button onClick={() => importNow()}>Import Now</Button>
 </Block>
 
-<Sheet class="pb-safe w-full" opened={askPassword}>
+<!-- <Sheet class="pb-safe w-full" opened={askPassword}>
   <Block>
     <List>
       <ListInput
@@ -117,11 +125,4 @@
       </div>
     </Block>
   </Block>
-</Sheet>
-
-<Dialog opened={alertOpened} onBackdropClick={() => (alertOpened = false)}>
-  {alertMessage}
-  <svelte:fragment slot="buttons">
-    <DialogButton onClick={() => (alertOpened = false)}>Close</DialogButton>
-  </svelte:fragment>
-</Dialog>
+</Sheet> -->
