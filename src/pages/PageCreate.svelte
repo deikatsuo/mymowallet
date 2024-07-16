@@ -5,10 +5,14 @@
   import {
     storeAlertMessage,
     storeAlertOpened,
+    storeAskPassword,
+    storeCallback,
+    storePasswordValue,
     storeTitle,
   } from "../stores.js";
   import { Block, BlockTitle, Button, Chip } from "konsta/svelte";
   import MdCopy from "../components/MdCopy.svelte";
+  import { encryptAndBuild } from "../utils.js";
 
   storeTitle.set("Create Mo Wallet");
 
@@ -18,6 +22,9 @@
   let entropy;
   let mnemonic;
   let arrMnemonic;
+  let passwordValue;
+
+  storePasswordValue.subscribe((val) => (passwordValue = val));
 
   function generateMnemonic() {
     entropy = ethers.randomBytes(32);
@@ -33,12 +40,30 @@
         storeAlertOpened.set(true);
       })
       .catch((err) => {
-        storeAlertMessage.set("Error copying nemonic phrase: "+err);
+        storeAlertMessage.set("Error copying nemonic phrase: " + err);
         storeAlertOpened.set(true);
       });
   }
 
   generateMnemonic();
+
+  function importNow() {
+    storeAskPassword.set(true);
+    storeCallback.set(importFromSeed);
+  }
+
+  function importFromSeed() {
+    passwordValue = passwordValue.replace(/\\s/g, "");
+    if (!passwordValue) {
+      storeAlertMessage.set("Please input a password!");
+      storeAlertOpened.set(true);
+      return;
+    }
+
+    encryptAndBuild(mnemonic, passwordValue);
+
+    navigate("/");
+  }
 </script>
 
 <BlockTitle>Generated Mnemonic Phrase</BlockTitle>
@@ -54,6 +79,6 @@
       >Regenerate</Button
     >
     <Button onClick={() => copyMnemonic()}><MdCopy class="w-6 h-6" /></Button>
-    <Button class="col-span-2">Import Now</Button>
+    <Button class="col-span-2" onClick={() => importNow()}>Import Now</Button>
   </div>
 </Block>
