@@ -13,6 +13,7 @@
   import { Block, BlockTitle, Button, Chip } from "konsta/svelte";
   import MdCopy from "../components/MdCopy.svelte";
   import { encryptAndBuild } from "../utils.js";
+  import MdReload from "../components/MdReload.svelte";
 
   storeTitle.set("Create Mo Wallet");
 
@@ -75,10 +76,10 @@
 
 <Block>
   <div class="grid grid-cols-5 gap-x-4">
-    <Button class="col-span-2" onClick={() => generateMnemonic()}
-      >Regenerate</Button
+    <Button class="bg-orange-500" onClick={() => generateMnemonic()}
+      ><MdReload class="w-6 h-6" /></Button
     >
     <Button onClick={() => copyMnemonic()}><MdCopy class="w-6 h-6" /></Button>
-    <Button class="col-span-2" onClick={() => importNow()}>Import Now</Button>
+    <Button class="col-span-3 bg-green-500" onClick={() => importNow()}>Import Now</Button>
   </div>
 </Block>
