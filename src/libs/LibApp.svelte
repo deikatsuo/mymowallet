@@ -2,7 +2,6 @@
   import { Router, Route, navigate } from "svelte-routing";
 
   import {
-    Navbar,
     Toolbar,
     Icon,
     Link,
@@ -20,13 +19,9 @@
   import PageSetting from "../pages/PageSetting.svelte";
   import PageNotFound from "../pages/PageNotFound.svelte";
 
-  import { storeActiveTab, storeTitle } from "../stores.js";
+  import { storeActiveTab } from "../stores";
 
-  let activeTab;
-  let title;
-
-  storeActiveTab.subscribe((val) => (activeTab = val));
-  storeTitle.subscribe((val) => (title = val));
+  
 </script>
 
 <Toolbar class={`left-0 w-full`}>
@@ -39,7 +34,7 @@
 
 <Tabbar labels icons class="left-0 bottom-0 fixed">
   <TabbarLink
-    active={activeTab === "wallet"}
+    active={$storeActiveTab === "wallet"}
     onClick={() => navigate("/")}
     label="Wallet"
   >
@@ -48,7 +43,7 @@
     </Icon>
   </TabbarLink>
   <TabbarLink
-    active={activeTab === "staking"}
+    active={$storeActiveTab === "staking"}
     onClick={() => navigate("/staking")}
     label="Staking"
   >
@@ -57,7 +52,7 @@
     </Icon>
   </TabbarLink>
   <TabbarLink
-    active={activeTab === "setting"}
+    active={$storeActiveTab === "setting"}
     onClick={() => navigate("/setting")}
     label="Setting"
   >

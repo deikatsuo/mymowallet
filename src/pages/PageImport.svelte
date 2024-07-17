@@ -3,30 +3,17 @@
   import { Mnemonic, Wallet } from "ethers";
   import { navigate } from "svelte-routing";
 
-  import {
-    Block,
-    BlockTitle,
-    List,
-    ListInput,
-    Sheet,
-    Button,
-    Dialog,
-    DialogButton,
-  } from "konsta/svelte";
+  import { Block, BlockTitle, List, ListInput, Button } from "konsta/svelte";
 
-  import MdPasswordAdd from "../components/MdPasswordAdd.svelte";
   import {
-    storeAlertMessage,
-    storeAlertOpened,
-    storeAskPassword,
+    storeAlert,
+    storePassword,
     storeCallback,
-    storeLogin,
-    storePasswordValue,
     storeTitle,
-  } from "../stores.js";
-  import { encryptAndBuild, encryptString, generateSalt } from "../utils.js";
+  } from "../stores";
+  import { encryptAndBuild } from "../utils";
 
-  storeTitle.set("Import Mo Wallet");
+  $storeTitle = "Import Mo Wallet";
 
   WebApp.BackButton.onClick(() => navigate("/"));
   WebApp.BackButton.show();
@@ -40,38 +27,39 @@
     seedValue = "";
   };
 
-  let passwordValue = "";
-
-  storePasswordValue.subscribe((val) => (passwordValue = val));
-  
   function importNow() {
     seedValue = seedValue.trim();
     if (!seedValue) {
-      storeAlertMessage.set("Please input Mnemonic phrase!");
-      storeAlertOpened.set(true);
+      $storeAlert.message = "Please input Mnemonic Phrase";
+      $storeAlert.open = true;
       return;
     }
 
     let isValidSeed = Mnemonic.isValidMnemonic(seedValue);
     if (!isValidSeed) {
-      storeAlertMessage.set("Mnemonic phrase is invalid!");
-      storeAlertOpened.set(true);
+      $storeAlert.message = "Mnemonic phrase is invalid!";
+      $storeAlert.open = true;
       return;
     }
 
-    storeAskPassword.set(true);
+    $storePassword = { open: true, password: "" };
     storeCallback.set(importFromSeed);
   }
 
   function importFromSeed() {
-    passwordValue = passwordValue.replace(/\\s/g, "");
-    if (!passwordValue) {
-      storeAlertMessage.set("Please input a password!");
-      storeAlertOpened.set(true);
+    $storePassword.password = $storePassword.password.replace(/\\s/g, "");
+    if (!$storePassword.password) {
+      $storeAlert.message = "Please input a password!";
+      $storeAlert.open = true;
       return;
     }
 
-    encryptAndBuild(seedValue, passwordValue);
+    encryptAndBuild(seedValue, $storePassword.password);
+    $storePassword = {
+      open: false,
+      password: "",
+      encryptedPassword: $storePassword.encryptedPassword,
+    };
 
     navigate("/");
   }

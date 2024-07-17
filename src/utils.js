@@ -1,15 +1,19 @@
+import { get } from "svelte/store";
 import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
 import {
+  storePassword,
   storeActiveWallet,
-  storeLogin,
+  storeIsLogin,
   storeMain,
   storeWallet,
   storeWallets,
 } from "./stores";
 import { Wallet } from "ethers";
 
-export const moProvider = ethers.getDefaultProvider("https://mainnet-rpc.mochain.app");
+export const moProvider = ethers.getDefaultProvider(
+  "https://mainnet-rpc.mochain.app"
+);
 
 let main = ethers.HDNodeWallet;
 storeMain.subscribe((val) => {
@@ -21,21 +25,27 @@ export function generateSalt() {
   return ethers.hexlify(saltByte).substring(2);
 }
 
-export function encryptString(string, salt) {
-  let cihper = CryptoJS.AES.encrypt(string, salt);
+export function encryptSeed(seed, password) {
+  let cihper = CryptoJS.AES.encrypt(seed, password);
   return cihper.toString();
 }
 
-export function decryptString(cipher, salt) {
-  let string = CryptoJS.AES.decrypt(cipher, salt);
+export function decryptSeed(cipher, password) {
+  let string = CryptoJS.AES.decrypt(cipher, password);
   return string.toString(CryptoJS.enc.Utf8);
+}
+
+export function encryptPassword(password, salt) {
+  let hmac = CryptoJS.HmacSHA256(password, salt);
+  return hmac.toString();
 }
 
 export function encryptAndBuild(seed, password) {
   let salt = generateSalt();
-  let encPassword = encryptString(password, salt);
-  let encSeed = encryptString(seed, encPassword);
+  let encPassword = encryptPassword(password, salt);
+  let encSeed = encryptSeed(seed, encPassword);
 
+  storePassword.set({ encryptedPassword: encPassword });
   localStorage.salt = salt;
   localStorage.seed = encSeed;
   localStorage.login = true;
@@ -47,8 +57,8 @@ export function decryptAndBuild(password) {
   let salt = localStorage.salt;
   let seed = localStorage.seed;
 
-  let encPassword = encryptString(password, salt);
-  let decSeed = decryptString(seed, encPassword);
+  let encPassword = encryptSeed(password, salt);
+  let decSeed = decryptSeed(seed, encPassword);
 
   buildWalletFromSeed(decSeed);
 }
@@ -59,8 +69,8 @@ export function buildWalletFromSeed(seed) {
 
   addWallet(wallet.address);
   setActiveWallet(wallet.address);
-  
-  storeLogin.set(localStorage.login);
+
+  storeIsLogin.set(localStorage.login);
 }
 
 export function addWallet(address, type = "parent", number = -1, key = "") {
@@ -99,7 +109,6 @@ export function setActiveWallet(
   } else {
     storeWallet.set(new ethers.Wallet(key, moProvider));
   }
-
 
   localStorage.active = activeWallet;
   storeActiveWallet.set(localStorage.active);

@@ -18,13 +18,9 @@
 
   import {
     storeTitle,
-    storeActiveTab,
-    storeLogin,
-    storeWallet,
-    storeAlertOpened,
-    storeAlertMessage,
-    storeAskPassword,
-    storePasswordValue,
+    storeIsLogin,
+    storeAlert,
+    storePassword,
     storeCallback,
   } from "./stores";
 
@@ -34,39 +30,18 @@
   WebApp.setBackgroundColor("secondary_bg_color");
   WebApp.expand();
 
-  let title;
-  let activeTab;
-  let isLogin;
-  let alertOpened;
-  let alertMessage;
-  let askPassword;
-  let passwordValue;
-  let callback;
-
-  storeTitle.subscribe((val) => (title = val));
-  storeActiveTab.subscribe((val) => (activeTab = val));
-  storeLogin.subscribe((val) => (isLogin = val));
-  storeAlertOpened.subscribe((val) => (alertOpened = val));
-  storeAlertMessage.subscribe((val) => (alertMessage = val));
-  storeAskPassword.subscribe((val) => (askPassword = val));
-  storePasswordValue.subscribe((val) => (passwordValue = val));
-  storeCallback.subscribe((val) => (callback = val));
-
   const onPasswordValueChange = (e) => {
-    storePasswordValue.set(e.target.value);
+    $storePassword.password = e.target.value;
   };
-
-  let wallet = ethers.HDNodeWallet;
-  storeWallet.subscribe((val) => (wallet = val));
 </script>
 
 <svelte:head>
-  <title>MyMoWallet - {title}</title>
+  <title>MyMoWallet - {storeTitle}</title>
 </svelte:head>
 
 <App theme="material">
   <Page>
-    {#if isLogin}
+    {#if $storeIsLogin}
       <LibApp />
     {:else}
       <LibWelcome />
@@ -74,7 +49,7 @@
   </Page>
 </App>
 
-<Sheet class="pb-safe w-full" opened={askPassword}>
+<Sheet class="pb-safe w-full" opened={$storePassword.open}>
   <Block>
     <List>
       <ListInput
@@ -82,7 +57,7 @@
         label="Input Password"
         type="password"
         placeholder="****"
-        value={passwordValue}
+        value={$storePassword.password}
         onInput={onPasswordValueChange}
       >
         <MdPasswordAdd slot="media" />
@@ -92,15 +67,13 @@
       <div class="grid grid-cols-2 gap-x-4">
         <Button
           class="bg-red-500"
-          onClick={() => (
-            storeAskPassword.set(false), storePasswordValue.set("")
-          )}
+          onClick={() => $storePassword = { open: false, password: "" }}
         >
           Cancel
         </Button>
         <Button
           onClick={() => {
-            storeAskPassword.set(false), callback();
+            $storeCallback();
           }}>Enter</Button
         >
       </div>
@@ -109,13 +82,12 @@
 </Sheet>
 
 <Dialog
-  opened={alertOpened}
-  onBackdropClick={() => storeAlertOpened.set(false)}
+  opened={$storeAlert.open}
+  onBackdropClick={() => ($storeAlert.open = false)}
 >
-  {alertMessage}
+  {$storeAlert.message}
   <svelte:fragment slot="buttons">
-    <DialogButton onClick={() => storeAlertOpened.set(false)}
-      >Close</DialogButton
+    <DialogButton onClick={() => ($storeAlert.open = false)}>Close</DialogButton
     >
   </svelte:fragment>
 </Dialog>

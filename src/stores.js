@@ -1,14 +1,24 @@
 import { ethers } from "ethers";
 import { readable, writable } from "svelte/store";
 
+// ask, value
+let askPassword = {};
+
 export const storeTitle = writable("");
 export const storeActiveTab = writable("");
-export const storeAskPassword = writable(false);
+export const storeAskPassword = writable(askPassword);
 export const storePasswordValue = writable("");
 export const storeAlertOpened = writable(false);
 export const storeAlertMessage = writable("");
 
-let callback = function (){};
+export const storeAlert = writable({ open: false, message: "" });
+export const storePassword = writable({
+  open: false,
+  password: "",
+  encryptedPassword: "",
+});
+
+let callback = function () {};
 export const storeCallback = writable(callback);
 
 let isLogin;
@@ -18,7 +28,7 @@ if (localStorage.login) {
   isLogin = false;
 }
 
-export const storeLogin = writable(isLogin);
+export const storeIsLogin = writable(isLogin);
 
 let wallets = [];
 if (localStorage.wallets) {
@@ -41,4 +51,3 @@ export const storeWallet = writable(wallet);
 let main = ethers.HDNodeWallet;
 
 export const storeMain = writable(main);
-

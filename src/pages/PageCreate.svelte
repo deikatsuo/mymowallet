@@ -3,19 +3,17 @@
   import { ethers } from "ethers";
   import { navigate } from "svelte-routing";
   import {
-    storeAlertMessage,
-    storeAlertOpened,
-    storeAskPassword,
+    storeAlert,
     storeCallback,
-    storePasswordValue,
+    storePassword,
     storeTitle,
-  } from "../stores.js";
+  } from "../stores";
   import { Block, BlockTitle, Button, Chip } from "konsta/svelte";
   import MdCopy from "../components/MdCopy.svelte";
-  import { encryptAndBuild } from "../utils.js";
+  import { encryptAndBuild } from "../utils";
   import MdReload from "../components/MdReload.svelte";
 
-  storeTitle.set("Create Mo Wallet");
+  $storeTitle = "Create Mo Wallet";
 
   WebApp.BackButton.onClick(() => navigate("/"));
   WebApp.BackButton.show();
@@ -23,9 +21,6 @@
   let entropy;
   let mnemonic;
   let arrMnemonic;
-  let passwordValue;
-
-  storePasswordValue.subscribe((val) => (passwordValue = val));
 
   function generateMnemonic() {
     entropy = ethers.randomBytes(32);
@@ -37,31 +32,36 @@
     navigator.clipboard
       .writeText(mnemonic)
       .then(() => {
-        storeAlertMessage.set("Mnemonic copied successfully");
-        storeAlertOpened.set(true);
+        $storeAlert = { open: true, message: "Mnemonic copied successfully" };
       })
       .catch((err) => {
-        storeAlertMessage.set("Error copying nemonic phrase: " + err);
-        storeAlertOpened.set(true);
+        $storeAlert = {
+          open: true,
+          message: "Error copying nemonic phrase: " + err,
+        };
       });
   }
 
   generateMnemonic();
 
   function importNow() {
-    storeAskPassword.set(true);
+    $storePassword = { open: true, password: "" };
     storeCallback.set(importFromSeed);
   }
 
   function importFromSeed() {
-    passwordValue = passwordValue.replace(/\\s/g, "");
-    if (!passwordValue) {
-      storeAlertMessage.set("Please input a password!");
-      storeAlertOpened.set(true);
+    $storePassword.password = $storePassword.password.replace(/\\s/g, "");
+    if (!$storePassword.password) {
+      $storeAlert = { open: true, message: "Please input a password!" };
       return;
     }
 
-    encryptAndBuild(mnemonic, passwordValue);
+    encryptAndBuild(mnemonic, $storePassword.password);
+    $storePassword = {
+      open: false,
+      password: "",
+      encryptedPassword: $storePassword.encryptedPassword,
+    };
 
     navigate("/");
   }
@@ -80,6 +80,6 @@
       ><MdReload class="w-6 h-6" /></Button
     >
     <Button onClick={() => copyMnemonic()}><MdCopy class="w-6 h-6" /></Button>
-    <Button class="col-span-3 bg-green-500" onClick={() => importNow()}>Import Now</Button>
+    <Button class="col-span-3" onClick={() => importNow()}>Import Now</Button>
   </div>
 </Block>
