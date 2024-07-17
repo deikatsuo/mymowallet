@@ -3,8 +3,8 @@
   import { Block, BlockTitle } from "konsta/svelte";
   import { storeTitle, storeActiveTab } from "../stores.js";
 
-  storeTitle.set("Staking");
-  storeActiveTab.set("staking");
+  $storeTitle = "Staking";
+  $storeActiveTab = "staking";
 
   WebApp.BackButton.hide();
 </script>

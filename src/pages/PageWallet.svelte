@@ -4,8 +4,8 @@
 
   import { storeTitle, storeActiveTab } from "../stores.js";
 
-  storeTitle.set("Wallet");
-  storeActiveTab.set("wallet");
+  $storeTitle = "Wallet";
+  $storeActiveTab = "wallet";
 
   WebApp.BackButton.hide();
 </script>

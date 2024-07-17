@@ -8,7 +8,7 @@
 
   import { storeTitle } from "../stores.js";
 
-  storeTitle.set("Welcome to MyMoWallet");
+  $storeTitle = "Welcome to MyMoWallet";
 
   WebApp.BackButton.hide();
 </script>
