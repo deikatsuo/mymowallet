@@ -64,13 +64,19 @@
       </ListInput>
     </List>
     <Block margin="my-4">
-      <div class="grid grid-cols-2 gap-x-4">
-        <Button
-          class="bg-red-500"
-          onClick={() => $storePassword = { open: false, password: "" }}
-        >
-          Cancel
-        </Button>
+      <div
+        class="grid {$storePassword.hideCancleButton
+          ? 'grid-cols-1'
+          : 'grid-cols-2 gap-x-4'}"
+      >
+        {#if !$storePassword.hideCancleButton}
+          <Button
+            class="bg-red-500"
+            onClick={() => ($storePassword = { open: false, password: "" })}
+          >
+            Cancel
+          </Button>
+        {/if}
         <Button
           onClick={() => {
             $storeCallback();
