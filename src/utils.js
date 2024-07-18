@@ -25,13 +25,13 @@ export function generateSalt() {
 }
 
 export function encryptSeed(seed, password) {
-  let cihper = CryptoJS.AES.encrypt(seed, password);
-  return cihper.toString();
+  let cipher = CryptoJS.AES.encrypt(seed, password);
+  return cipher.toString();
 }
 
 export function decryptSeed(cipher, password) {
-  let string = CryptoJS.AES.decrypt(cipher, password);
-  return string.toString(CryptoJS.enc.Utf8);
+  let seed = CryptoJS.AES.decrypt(cipher, password);
+  return seed.toString(CryptoJS.enc.Utf8);
 }
 
 export function encryptPassword(password, salt) {
@@ -58,6 +58,13 @@ export function decryptAndBuild(password) {
   let encSeed = localStorage.seed;
 
   let decSeed = decryptSeed(encSeed, encPassword);
+  if (!decSeed) {
+    throw new Error("Wrong password");
+  }
+  if (!decSeed) {
+    console.log("empty");
+    return false;
+  }
   storePassword.set({ encryptedPassword: encPassword });
 
   buildWalletFromSeed(decSeed);
@@ -79,11 +86,13 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
     type: type,
     number: number,
     key: key,
+    active: true,
   };
   let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
   if (wallets.length > 0) {
     const isAddressExists = wallets.some((item) => item.address === address);
     if (!isAddressExists) {
+      wallets.some((item) => (item.address = false));
       wallets.push(wallet);
     }
   } else {
