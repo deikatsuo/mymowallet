@@ -3,6 +3,7 @@ import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
 import {
   storePassword,
+  storeEncryptedPassword,
   storeActiveWallet,
   storeIsLogin,
   storeMain,
@@ -44,7 +45,7 @@ export function encryptAndBuild(seed, password) {
   let encPassword = encryptPassword(password, salt);
   let encSeed = encryptSeed(seed, encPassword);
 
-  storePassword.set({ encryptedPassword: encPassword });
+  storeEncryptedPassword.set(encPassword);
   localStorage.salt = salt;
   localStorage.seed = encSeed;
   localStorage.login = true;
@@ -61,7 +62,7 @@ export function decryptAndBuild(password) {
   if (!decSeed) {
     throw new Error("Wrong password");
   }
-  storePassword.set({ encryptedPassword: encPassword });
+  storeEncryptedPassword.set(encPassword);
 
   buildWalletFromSeed(decSeed);
 }

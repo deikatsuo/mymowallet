@@ -8,8 +8,8 @@ export const storePassword = writable({
   open: false,
   hideCancleButton: false,
   password: "",
-  encryptedPassword: "",
 });
+export const storeEncryptedPassword = writable();
 export const storeCallback = writable(function () {});
 export const storeIsLogin = writable(localStorage.login ? true : false);
 export const storeWallets = writable(

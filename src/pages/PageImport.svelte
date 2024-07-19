@@ -58,7 +58,6 @@
     $storePassword = {
       open: false,
       password: "",
-      encryptedPassword: $storePassword.encryptedPassword,
     };
 
     navigate("/");

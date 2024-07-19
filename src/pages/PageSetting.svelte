@@ -7,6 +7,7 @@
     storeActiveTab,
     storeAlert,
     storePassword,
+    storeEncryptedPassword,
     storeIsLogin,
     storeCallback,
     storeActiveWallet,
@@ -40,7 +41,7 @@
       localStorage.salt
     );
 
-    if (encPassword !== $storePassword.encryptedPassword) {
+    if (encPassword !== $storeEncryptedPassword) {
       $storeAlert = { open: true, message: "Please input a correct password!" };
       return;
     }

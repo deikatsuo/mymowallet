@@ -16,13 +16,14 @@
   import {
     storeIsLogin,
     storePassword,
+    storeEncryptedPassword,
     storeActiveTab,
     storeCallback,
     storeAlert,
   } from "../stores";
   import { decryptAndBuild } from "../utils";
 
-  if ($storeIsLogin && !$storePassword.encryptedPassword) {
+  if ($storeIsLogin && !$storeEncryptedPassword) {
     $storePassword = { open: true, hideCancleButton: true };
     $storeCallback = importFromLocalStorage;
   }
@@ -46,7 +47,6 @@
     $storePassword = {
       open: false,
       password: "",
-      encryptedPassword: $storePassword.encryptedPassword,
     };
   }
 </script>
