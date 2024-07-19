@@ -57,7 +57,10 @@
     storeIsLogin.set(localStorage.login);
     navigate("/");
   }
-  let themes = ["material", "ios"];
+  let themes = [
+    { value: "material", view: "Material" },
+    { value: "ios", view: "iOS" },
+  ];
 </script>
 
 <main>
@@ -71,7 +74,7 @@
   {#if key}
     <BlockTitle>Secret Key</BlockTitle>
     <Block strong inset class="space-y-4">
-      <p>
+      <p class="text-wrap">
         {key}
       </p>
     </Block>
@@ -95,8 +98,8 @@
     >
       <MdTheme slot="media" />
       {#each themes as theme}
-        <option value={theme} selected={theme == $storeTheme}>
-          {theme}
+        <option value={theme.value} selected={theme.value == $storeTheme}>
+          {theme.view}
         </option>
       {/each}
     </ListInput>
