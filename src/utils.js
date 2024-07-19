@@ -67,7 +67,7 @@ export function decryptAndBuild(password) {
 }
 
 export function buildWalletFromSeed(seed) {
-  let wallet = Wallet.fromPhrase(seed, moProvider);
+  let wallet = Wallet.fromPhrase(seed);
   storeMain.set(wallet);
 
   addWallet(wallet.address);

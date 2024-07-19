@@ -9,10 +9,11 @@
     storePassword,
     storeIsLogin,
     storeCallback,
+    storeActiveWallet,
   } from "../stores";
   import { navigate } from "svelte-routing";
-  import { recoverAddress } from "ethers";
-  import { encryptPassword } from "../utils";
+  import { ethers, recoverAddress } from "ethers";
+  import { encryptPassword, moProvider } from "../utils";
 
   $storeTitle = "Setting";
   $storeActiveTab = "setting";
@@ -34,10 +35,6 @@
       return;
     }
 
-    console.log("Password ", $storePassword.password);
-    console.log("Password Enc ", $storePassword.encryptedPassword);
-    console.log("Salt ", localStorage.salt);
-
     let encPassword = encryptPassword(
       $storePassword.password,
       localStorage.salt
@@ -47,9 +44,9 @@
       $storeAlert = { open: true, message: "Please input a correct password!" };
       return;
     }
-    //encryptAndBuild(mnemonic, passwordValue);
 
-    navigate("/");
+    key = $storeActiveWallet.wallet.privateKey;
+    mnemonic = $storeActiveWallet.wallet.mnemonic.phrase;
   }
 
   function destroy() {

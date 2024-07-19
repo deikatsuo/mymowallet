@@ -48,8 +48,6 @@
       password: "",
       encryptedPassword: $storePassword.encryptedPassword,
     };
-
-    navigate("/");
   }
 </script>
 
