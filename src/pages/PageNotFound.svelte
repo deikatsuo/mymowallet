@@ -3,7 +3,7 @@
   import { Block, BlockTitle } from "konsta/svelte";
   import { navigate } from "svelte-routing";
 
-  import { storeTitle, storeActiveTab } from "../stores.js";
+  import { storeTitle, storeIsLogin, storePassword } from "../stores.js";
   import NotFound from "../components/NotFound.svelte";
 
   storeTitle.set("Page Not Found");

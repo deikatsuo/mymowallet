@@ -12,7 +12,7 @@
 
 <main>
   <BlockTitle>Wallet</BlockTitle>
-  <Block strong>
+  <Block strong inset>
     <p>Page under construction</p>
   </Block>
 </main>

@@ -1,8 +1,9 @@
 <script>
   import WebApp from "@twa-dev/sdk";
-  import { Block, BlockTitle, Button } from "konsta/svelte";
+  import { Block, BlockTitle, List, ListInput, Button } from "konsta/svelte";
 
   import {
+    storeTheme,
     storeTitle,
     storeActiveTab,
     storeAlert,
@@ -13,8 +14,8 @@
     storeActiveWallet,
   } from "../stores";
   import { navigate } from "svelte-routing";
-  import { ethers, recoverAddress } from "ethers";
-  import { encryptPassword, moProvider } from "../utils";
+  import { encryptPassword } from "../utils";
+  import MdTheme from "../components/MdTheme.svelte";
 
   $storeTitle = "Setting";
   $storeActiveTab = "setting";
@@ -48,6 +49,7 @@
 
     key = $storeActiveWallet.wallet.privateKey;
     mnemonic = $storeActiveWallet.wallet.mnemonic.phrase;
+    $storePassword.open = false;
   }
 
   function destroy() {
@@ -55,11 +57,12 @@
     storeIsLogin.set(localStorage.login);
     navigate("/");
   }
+  let themes = ["material", "ios"];
 </script>
 
 <main>
   <BlockTitle>Wallet</BlockTitle>
-  <Block strong outlineIos class="space-y-2">
+  <Block strong inset class="space-y-2">
     <div class="grid grid-cols-2 gap-x-4">
       <Button onClick={() => recover()}>Recover</Button>
       <Button onClick={() => destroy()} class="bg-red-500">Destroy</Button>
@@ -81,8 +84,21 @@
       </p>
     </Block>
   {/if}
-  <BlockTitle>Setting</BlockTitle>
-  <Block strong>
-    <p>Page under construction</p>
-  </Block>
+  <BlockTitle>Theme</BlockTitle>
+  <List strong inset>
+    <ListInput
+      outline
+      type="select"
+      dropdown
+      placeholder="Please choose..."
+      onChange={(e) => ($storeTheme = e.target.value)}
+    >
+      <MdTheme slot="media" />
+      {#each themes as theme}
+        <option value={theme} selected={theme == $storeTheme}>
+          {theme}
+        </option>
+      {/each}
+    </ListInput>
+  </List>
 </main>

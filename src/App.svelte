@@ -17,6 +17,7 @@
   import LibWelcome from "./libs/LibWelcome.svelte";
 
   import {
+    storeTheme,
     storeTitle,
     storeIsLogin,
     storeAlert,
@@ -39,7 +40,7 @@
   <title>MyMoWallet - {storeTitle}</title>
 </svelte:head>
 
-<App theme="material">
+<App theme="{$storeTheme}">
   <Page>
     {#if $storeIsLogin}
       <LibApp />

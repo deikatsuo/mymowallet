@@ -21,3 +21,4 @@ export const storeActiveWallet = writable({
   number: 0,
 });
 export const storeMain = writable(ethers.HDNodeWallet);
+export const storeTheme = writable("material");
