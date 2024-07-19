@@ -74,7 +74,7 @@
   {#if key}
     <BlockTitle>Secret Key</BlockTitle>
     <Block strong inset class="space-y-4">
-      <p class="text-wrap">
+      <p class="break-all">
         {key}
       </p>
     </Block>
