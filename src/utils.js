@@ -61,10 +61,6 @@ export function decryptAndBuild(password) {
   if (!decSeed) {
     throw new Error("Wrong password");
   }
-  if (!decSeed) {
-    console.log("empty");
-    return false;
-  }
   storePassword.set({ encryptedPassword: encPassword });
 
   buildWalletFromSeed(decSeed);

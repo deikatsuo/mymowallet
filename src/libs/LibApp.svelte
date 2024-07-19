@@ -38,16 +38,11 @@
     try {
       decryptAndBuild($storePassword.password);
     } catch (e) {
-      console.log("Error ", e.message);
       $storeAlert.message = "Please input the correct password!";
       $storeAlert.open = true;
       return;
     }
-    // if (!decryptAndBuild($storePassword.password)) {
-    //   $storeAlert.message = "Please input the correct password!";
-    //   $storeAlert.open = true;
-    //   return;
-    // }
+
     $storePassword = {
       open: false,
       password: "",
