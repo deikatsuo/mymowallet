@@ -12,6 +12,7 @@
   import MdCopy from "../components/MdCopy.svelte";
   import { encryptAndBuild } from "../utils";
   import MdReload from "../components/MdReload.svelte";
+  import MdNewWallet from "../components/MdNewWallet.svelte";
 
   $storeTitle = "Create Mo Wallet";
 
@@ -65,6 +66,12 @@
     navigate("/");
   }
 </script>
+
+<div class="flex justify-center">
+  <Block>
+    <MdNewWallet class="text-md-light-surface-3" width="10em" height="10em" />
+  </Block>
+</div>
 
 <BlockTitle>Generated Mnemonic Phrase</BlockTitle>
 <Block strong inset>

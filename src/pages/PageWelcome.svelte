@@ -1,6 +1,6 @@
 <script>
   import WebApp from "@twa-dev/sdk";
-  import { Block, BlockTitle, Button } from "konsta/svelte";
+  import { Block, BlockTitle, Button, Navbar } from "konsta/svelte";
 
   import { navigate } from "svelte-routing";
 
@@ -12,6 +12,8 @@
 
   WebApp.BackButton.hide();
 </script>
+
+<Navbar title={$storeTitle}></Navbar>
 
 <div class="flex justify-center">
   <Block>

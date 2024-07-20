@@ -12,6 +12,7 @@
     storeTitle,
   } from "../stores";
   import { encryptAndBuild } from "../utils";
+  import MdImport from "../components/MdImport.svelte";
 
   $storeTitle = "Import Mo Wallet";
 
@@ -63,6 +64,12 @@
     navigate("/");
   }
 </script>
+
+<div class="flex justify-center">
+  <Block>
+    <MdImport class="text-md-light-surface-3" width="10em" height="10em" />
+  </Block>
+</div>
 
 <Block>
   <BlockTitle>Mnemonic Phrase</BlockTitle>
