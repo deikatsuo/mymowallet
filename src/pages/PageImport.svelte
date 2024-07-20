@@ -10,6 +10,7 @@
     storePassword,
     storeCallback,
     storeTitle,
+    storeIsLogin,
   } from "../stores";
   import { encryptAndBuild } from "../utils";
   import MdImport from "../components/MdImport.svelte";
@@ -60,6 +61,8 @@
       open: false,
       password: "",
     };
+
+    $storeIsLogin = true;
 
     navigate("/");
   }

@@ -5,6 +5,7 @@
   import {
     storeAlert,
     storeCallback,
+    storeIsLogin,
     storePassword,
     storeTitle,
   } from "../stores";
@@ -62,6 +63,8 @@
       open: false,
       password: "",
     };
+
+    $storeIsLogin = true;
 
     navigate("/");
   }
