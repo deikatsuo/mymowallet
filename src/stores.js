@@ -22,3 +22,4 @@ export const storeActiveWallet = writable({
 });
 export const storeMain = writable(ethers.HDNodeWallet);
 export const storeTheme = writable("material");
+export const storeCurrency = writable("idr");

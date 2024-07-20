@@ -1,7 +1,12 @@
 <script>
   import { Router, Route, navigate } from "svelte-routing";
 
-  import { Toolbar, Icon, Link, Tabbar, TabbarLink } from "konsta/svelte";
+  import {
+    Block,
+    Icon,
+    Tabbar,
+    TabbarLink,
+  } from "konsta/svelte";
 
   import MdHistory from "../components/MdHistory.svelte";
   import MdWallet from "../components/MdWallet.svelte";
@@ -51,14 +56,6 @@
   }
 </script>
 
-<Toolbar class={`left-0 w-full`}>
-  <Link iconOnly>
-    <Icon badge="0" badgeColors={{ bg: "bg-red-500" }}>
-      <MdHistory class="w-6 h-6" />
-    </Icon>
-  </Link>
-</Toolbar>
-
 <Tabbar labels icons class="left-0 bottom-0 fixed">
   <TabbarLink
     active={$storeActiveTab === "wallet"}
@@ -89,9 +86,11 @@
   </TabbarLink>
 </Tabbar>
 
-<Router>
-  <Route path="/" component={PageWallet} />
-  <Route path="/staking" component={PageStaking} />
-  <Route path="/setting" component={PageSetting} />
-  <Route component={PageNotFound} />
-</Router>
+<main class="pb-16">
+  <Router>
+    <Route path="/" component={PageWallet} />
+    <Route path="/staking" component={PageStaking} />
+    <Route path="/setting" component={PageSetting} />
+    <Route component={PageNotFound} />
+  </Router>
+</main>

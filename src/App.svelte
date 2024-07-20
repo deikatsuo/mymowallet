@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-  <title>MyMoWallet - {storeTitle}</title>
+  <title>MyMoWallet - {$storeTitle}</title>
 </svelte:head>
 
 <App theme="{$storeTheme}">

@@ -15,7 +15,7 @@
 
 <div class="flex justify-center">
   <Block>
-    <Mo class="fill-md-light-surface-2" width="10em" height="10em" />
+    <Mo class="fill-md-light-surface-3" width="10em" height="10em" />
   </Block>
 </div>
 
