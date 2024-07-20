@@ -24,6 +24,7 @@
     storeIsLogin,
     storeAlert,
     storePassword,
+    storeEncryptedPassword,
     storeCallback,
     storeDestroy,
   } from "./stores";
@@ -67,12 +68,15 @@
         <MdPasswordAdd slot="media" />
       </ListInput>
     </List>
-    <BlockFooter>
-      <Link
-        onClick={() => (($storeDestroy = true), ($storePassword.open = false))}
-        >Forgot Password?</Link
-      >
-    </BlockFooter>
+    {#if $storeIsLogin}
+      <BlockFooter>
+        <Link
+          onClick={() => (
+            ($storeDestroy = true), ($storePassword.open = false)
+          )}>Forgot Password? Destroy the Wallet</Link
+        >
+      </BlockFooter>
+    {/if}
     <Block margin="my-4">
       <div
         class="grid {$storePassword.hideCancleButton
