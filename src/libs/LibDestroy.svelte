@@ -2,6 +2,7 @@
   import { Block, BlockHeader, BlockTitle, Button } from "konsta/svelte";
   import { storeDestroy, storeEncryptedPassword, storeIsLogin, storePassword } from "../stores";
   import { navigate } from "svelte-routing";
+  import MdWarning from "../components/MdWarning.svelte";
 
   function destroy() {
     localStorage.clear();
@@ -11,6 +12,12 @@
     navigate("/");
   }
 </script>
+
+<div class="flex justify-center">
+  <Block>
+    <MdWarning class="text-md-light-surface-3" width="10em" height="10em" />
+  </Block>
+</div>
 
 <BlockTitle>Are you sure to destroy the wallet?</BlockTitle>
 <BlockHeader
