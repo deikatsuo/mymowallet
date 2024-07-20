@@ -64,8 +64,6 @@
       password: "",
     };
 
-    $storeIsLogin = true;
-
     navigate("/");
   }
 </script>

@@ -24,7 +24,6 @@
     storeIsLogin,
     storeAlert,
     storePassword,
-    storeEncryptedPassword,
     storeCallback,
     storeDestroy,
   } from "./stores";
@@ -46,7 +45,7 @@
 
 <App theme={$storeTheme}>
   <Page>
-    {#if $storeIsLogin}
+    {#if $storeIsLogin }
       <LibApp />
     {:else}
       <LibWelcome />

@@ -1,6 +1,14 @@
 <script>
   import WebApp from "@twa-dev/sdk";
-  import { Block, BlockTitle, Button, Navbar } from "konsta/svelte";
+  import {
+    Block,
+    BlockTitle,
+    Button,
+    Navbar,
+    Toolbar,
+    Link,
+    Icon,
+  } from "konsta/svelte";
 
   import { navigate } from "svelte-routing";
 
@@ -13,14 +21,13 @@
   WebApp.BackButton.hide();
 </script>
 
-<Navbar title={$storeTitle}></Navbar>
-
 <div class="flex justify-center">
   <Block>
     <Mo class="fill-md-light-surface-3" width="10em" height="10em" />
   </Block>
 </div>
 
+<BlockTitle large>{$storeTitle}</BlockTitle>
 <Block strong inset class="space-y-4">
   <p>
     To get started, you need to create a new wallet or import an existing wallet
