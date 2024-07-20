@@ -3,6 +3,10 @@
   import { storeDestroy, storeEncryptedPassword, storeIsLogin, storePassword } from "../stores";
   import { navigate } from "svelte-routing";
   import MdWarning from "../components/MdWarning.svelte";
+  import WebApp from "@twa-dev/sdk";
+
+  WebApp.setHeaderColor("#ffa500");
+  WebApp.setBackgroundColor("#ffa500");
 
   function destroy() {
     localStorage.clear();
