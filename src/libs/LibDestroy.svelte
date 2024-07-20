@@ -1,12 +1,17 @@
 <script>
   import { Block, BlockHeader, BlockTitle, Button } from "konsta/svelte";
-  import { storeDestroy, storeEncryptedPassword, storeIsLogin, storePassword } from "../stores";
+  import {
+    storeDestroy,
+    storeEncryptedPassword,
+    storeIsLogin,
+    storePassword,
+  } from "../stores";
   import { navigate } from "svelte-routing";
   import MdWarning from "../components/MdWarning.svelte";
   import WebApp from "@twa-dev/sdk";
 
-  WebApp.setHeaderColor("#ffa500");
-  WebApp.setBackgroundColor("#ffa500");
+  WebApp.setHeaderColor("#ff0000");
+  WebApp.setBackgroundColor("#ff0000");
 
   function destroy() {
     localStorage.clear();
@@ -14,6 +19,15 @@
     $storeDestroy = false;
 
     navigate("/");
+  }
+
+  function cancel() {
+    WebApp.setHeaderColor("secondary_bg_color");
+    WebApp.setBackgroundColor("secondary_bg_color");
+    $storeDestroy = false;
+    if (!$storeEncryptedPassword) {
+      $storePassword.open = true;
+    }
   }
 </script>
 
@@ -30,14 +44,7 @@
 >
 <Block strong inset class="space-y-2">
   <div class="grid grid-cols-2 gap-x-4">
-    <Button
-      onClick={() => {
-        $storeDestroy = false;
-        if (!$storeEncryptedPassword) {
-          $storePassword.open = true;
-        }
-      }}>Cancel</Button
-    >
+    <Button onClick={() => cancel()}>Cancel</Button>
     <Button onClick={() => destroy()} class="bg-red-500">Destroy</Button>
   </div>
 </Block>
