@@ -13,6 +13,7 @@
     storeCallback,
     storeActiveWallet,
     storeCurrency,
+    storeDestroy,
   } from "../stores";
   import { navigate } from "svelte-routing";
   import { encryptPassword } from "../utils";
@@ -51,14 +52,9 @@
 
     key = $storeActiveWallet.wallet.privateKey;
     mnemonic = $storeActiveWallet.wallet.mnemonic.phrase;
-    $storePassword.open = false;
+    $storePassword = { open: false, password: "" };
   }
 
-  function destroy() {
-    localStorage.clear();
-    storeIsLogin.set(localStorage.login);
-    navigate("/");
-  }
   let currencies = [
     { value: "idr", view: "Indonesian Rupiah" },
     { value: "usd", view: "US Dollar" },
@@ -83,7 +79,9 @@
 <Block strong inset class="space-y-2">
   <div class="grid grid-cols-2 gap-x-4">
     <Button onClick={() => recover()}>Recover</Button>
-    <Button onClick={() => destroy()} class="bg-red-500">Destroy</Button>
+    <Button onClick={() => ($storeDestroy = true)} class="bg-red-500"
+      >Destroy</Button
+    >
   </div>
 </Block>
 {#if key}

@@ -11,6 +11,8 @@
     List,
     ListInput,
     Button,
+    BlockFooter,
+    Link,
   } from "konsta/svelte";
 
   import LibApp from "./libs/LibApp.svelte";
@@ -23,6 +25,7 @@
     storeAlert,
     storePassword,
     storeCallback,
+    storeDestroy,
   } from "./stores";
 
   import MdPasswordAdd from "./components/MdPasswordAdd.svelte";
@@ -40,7 +43,7 @@
   <title>MyMoWallet - {$storeTitle}</title>
 </svelte:head>
 
-<App theme="{$storeTheme}">
+<App theme={$storeTheme}>
   <Page>
     {#if $storeIsLogin}
       <LibApp />
@@ -64,6 +67,12 @@
         <MdPasswordAdd slot="media" />
       </ListInput>
     </List>
+    <BlockFooter>
+      <Link
+        onClick={() => (($storeDestroy = true), ($storePassword.open = false))}
+        >Forgot Password?</Link
+      >
+    </BlockFooter>
     <Block margin="my-4">
       <div
         class="grid {$storePassword.hideCancleButton
