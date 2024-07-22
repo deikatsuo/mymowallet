@@ -14,6 +14,8 @@
   WebApp.setBackgroundColor("#ff0000");
 
   function destroy() {
+    WebApp.setHeaderColor("secondary_bg_color");
+    WebApp.setBackgroundColor("secondary_bg_color");
     localStorage.clear();
     $storeIsLogin = false;
     $storeDestroy = false;
