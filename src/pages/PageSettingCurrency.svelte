@@ -2,12 +2,21 @@
   import { List, ListInput } from "konsta/svelte";
   import IconCurrencyIdr from "../components/IconCurrencyIdr.svelte";
   import IconCurrencyUsd from "../components/IconCurrencyUsd.svelte";
-  import { storeCurrency } from "../stores";
+  import { storeCurrency, storePrice } from "../stores";
 
   let currencies = [
     { value: "idr", view: "Indonesian Rupiah" },
     { value: "usd", view: "US Dollar" },
   ];
+
+  const onCurrencyValueChange = (e) => {
+    $storeCurrency = e.target.value;
+    localStorage.localCurrency = $storeCurrency;
+
+    $storePrice = { price: 0, local: "" };
+    localStorage.removeItem("localPrice");
+    localStorage.removeItem("lastPriceUpdate");
+  };
 </script>
 
 <List strong inset>
@@ -17,7 +26,7 @@
       type="select"
       dropdown
       placeholder="Please choose..."
-      onChange={(e) => ($storeCurrency = e.target.value)}
+      onChange={onCurrencyValueChange}
     >
       <IconCurrencyIdr slot="media" />
 
@@ -36,7 +45,7 @@
       type="select"
       dropdown
       placeholder="Please choose..."
-      onChange={(e) => ($storeCurrency = e.target.value)}
+      onChange={onCurrencyValueChange}
     >
       <IconCurrencyUsd slot="media" />
 
