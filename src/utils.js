@@ -2,12 +2,13 @@ import { get } from "svelte/store";
 import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
 import {
-  storePassword,
   storeEncryptedPassword,
   storeActiveWallet,
   storeIsLogin,
   storeMain,
   storeWallets,
+  storeBalance,
+  storeCurrency,
 } from "./stores";
 import { Wallet } from "ethers";
 
@@ -69,6 +70,7 @@ export function decryptAndBuild(password) {
 
 export function buildWalletFromSeed(seed) {
   let wallet = Wallet.fromPhrase(seed);
+
   storeMain.set(wallet);
 
   addWallet(wallet.address);
@@ -112,4 +114,22 @@ export function setStoreActiveWallet(
   };
 
   storeActiveWallet.set(activeWallet);
+}
+
+export function getToken() {
+  let wallet = get(storeActiveWallet).wallet;
+  waitToken(wallet);
+}
+
+async function waitToken(wallet) {
+  let balance = await moProvider.getBalance(wallet.address);
+  let currency = get(storeCurrency);
+  if (currency === "idr") {
+    storeBalance.set({ balance: ethers.formatEther(balance), local: "Rp" });
+  } else if (currency === "usd") {
+    storeBalance.set({ balance: ethers.formatEther(balance), local: "$" });
+  }
+  console.log("Balance ", balance);
+  console.log("Balance Format ", ethers.formatEther(balance));
+  console.log("Balance Number ", parseFloat(ethers.formatEther(balance)));
 }

@@ -21,7 +21,7 @@
     storeAlert,
     storeDestroy,
   } from "../stores";
-  import { decryptAndBuild } from "../utils";
+  import { decryptAndBuild, getToken } from "../utils";
   import LibDestroy from "./LibDestroy.svelte";
 
   if ($storeIsLogin && !$storeEncryptedPassword) {
@@ -49,6 +49,7 @@
       open: false,
       password: "",
     };
+    getToken();
   }
 </script>
 

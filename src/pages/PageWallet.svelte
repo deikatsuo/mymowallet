@@ -16,16 +16,20 @@
     storeActiveTab,
     storeCurrency,
     storePrice,
-  } from "../stores.js";
+    storeEncryptedPassword,
+    storeBalance,
+    storeActiveWallet,
+  } from "../stores";
   import IconHistory from "../components/IconHistory.svelte";
   import IconMo from "../components/IconMo.svelte";
+  import { getToken } from "../utils";
 
   $storeTitle = "Wallet";
   $storeActiveTab = "wallet";
 
   WebApp.BackButton.hide();
 
-  if(localStorage.localPrice) {
+  if (localStorage.localPrice) {
     $storePrice = JSON.parse(localStorage.localPrice);
   }
 
@@ -79,24 +83,15 @@
   }
   getPrice();
 
+  if ($storeEncryptedPassword) {
+    getToken();
+  }
 </script>
 
 <Toolbar></Toolbar>
 <Toolbar>
   <div class="w-full flex align-middle text-center justify-center">
-    <div>ok</div>
-    <div>ok</div>
-    <div>ok</div>
-    <p>Test</p>
-    <br />
-    <p>Test</p>
-    <br />
-    <p>Test</p>
-    <br />
-    <p>Test</p>
-    <br />
-    <p>Test</p>
-    <br />
+    {$storeActiveWallet.wallet.address}
   </div>
 </Toolbar>
 <Toolbar top={true} outline={true}></Toolbar>
@@ -118,8 +113,9 @@
   <ListItem
     link
     header={$storePrice.local}
-    title="1.300.554"
-    footer="$547"
+    title={$storeBalance.balance}
+    footer={$storeBalance.local +
+      parseFloat($storeBalance.balance) * $storePrice.price}
     after="MO"
   >
     <IconMo class="w-6 h-6" slot="media" />
