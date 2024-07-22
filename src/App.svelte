@@ -45,7 +45,7 @@
 
 <App theme={$storeTheme}>
   <Page>
-    {#if $storeIsLogin }
+    {#if $storeIsLogin}
       <LibApp />
     {:else}
       <LibWelcome />
@@ -56,16 +56,18 @@
 <Sheet class="pb-safe w-full" opened={$storePassword.open}>
   <Block>
     <List>
-      <ListInput
-        outline
-        label="Input Password"
-        type="password"
-        placeholder="****"
-        value={$storePassword.password}
-        onInput={onPasswordValueChange}
-      >
-        <IconPasswordAdd slot="media" />
-      </ListInput>
+      <form on:submit|preventDefault={() => $storeCallback()}>
+        <ListInput
+          outline
+          label="Input Password"
+          type="password"
+          placeholder="****"
+          value={$storePassword.password}
+          onInput={onPasswordValueChange}
+        >
+          <IconPasswordAdd slot="media" />
+        </ListInput>
+      </form>
     </List>
     {#if $storeIsLogin}
       <BlockFooter>
