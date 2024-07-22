@@ -3,9 +3,9 @@
 
   import { Block, Icon, Tabbar, TabbarLink } from "konsta/svelte";
 
-  import MdWallet from "../components/MdWallet.svelte";
-  import MdFinance from "../components/MdFinance.svelte";
-  import MdGear from "../components/MdGear.svelte";
+  import IconWallet from "../components/IconWallet.svelte";
+  import IconFinance from "../components/IconFinance.svelte";
+  import IconGear from "../components/IconGear.svelte";
 
   import PageWallet from "../pages/PageWallet.svelte";
   import PageStaking from "../pages/PageStaking.svelte";
@@ -62,7 +62,7 @@
       label="Wallet"
     >
       <Icon slot="icon" badge="" badgeColors={{ bg: "bg-green-500" }}>
-        <MdWallet class="w-6 h-6" />
+        <IconWallet class="w-6 h-6" />
       </Icon>
     </TabbarLink>
     <TabbarLink
@@ -71,7 +71,7 @@
       label="Staking"
     >
       <Icon slot="icon" badge="" badgeColors={{ bg: "bg-red-500" }}>
-        <MdFinance class="w-6 h-6" />
+        <IconFinance class="w-6 h-6" />
       </Icon>
     </TabbarLink>
     <TabbarLink
@@ -80,7 +80,7 @@
       label="Setting"
     >
       <Icon slot="icon" badge="" badgeColors={{ bg: "bg-red-500" }}>
-        <MdGear class="w-6 h-6" />
+        <IconGear class="w-6 h-6" />
       </Icon>
     </TabbarLink>
   </Tabbar>

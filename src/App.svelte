@@ -28,7 +28,7 @@
     storeDestroy,
   } from "./stores";
 
-  import MdPasswordAdd from "./components/MdPasswordAdd.svelte";
+  import IconPasswordAdd from "./components/IconPasswordAdd.svelte";
 
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
@@ -64,7 +64,7 @@
         value={$storePassword.password}
         onInput={onPasswordValueChange}
       >
-        <MdPasswordAdd slot="media" />
+        <IconPasswordAdd slot="media" />
       </ListInput>
     </List>
     {#if $storeIsLogin}

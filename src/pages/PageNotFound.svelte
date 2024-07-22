@@ -4,7 +4,7 @@
   import { navigate } from "svelte-routing";
 
   import { storeTitle, storeIsLogin, storePassword } from "../stores.js";
-  import NotFound from "../components/NotFound.svelte";
+  import IconNotFound from "../components/IconNotFound.svelte";
 
   storeTitle.set("Page Not Found");
 
@@ -33,7 +33,7 @@
           >
         </div>
         <div class="w-full lg:flex lg:justify-end lg:w-1/2 mx-5 my-12">
-          <NotFound />
+          <IconNotFound />
         </div>
       </div>
     </div>

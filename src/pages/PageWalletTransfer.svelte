@@ -4,7 +4,7 @@
   import { storeTitle } from "../stores.js";
   import { BlockTitle, List, ListInput } from "konsta/svelte";
 
-  import Mo from "../components/Mo.svelte";
+  import IconMo from "../components/IconMo.svelte";
 
   storeTitle.set("Transfer to");
 
@@ -21,6 +21,6 @@
     type="text"
     placeholder="0x..."
   >
-    <Mo class="fill-md-light-surface-2" width="2em" height="2em" slot="media" />
+    <IconMo class="fill-md-light-surface-2" width="2em" height="2em" slot="media" />
   </ListInput>
 </List>

@@ -3,16 +3,12 @@
   import {
     Block,
     BlockTitle,
-    Button,
-    Navbar,
-    Toolbar,
-    Link,
-    Icon,
+    Button
   } from "konsta/svelte";
 
   import { navigate } from "svelte-routing";
 
-  import Mo from "../components/Mo.svelte";
+  import IconMo from "../components/IconMo.svelte";
 
   import { storeTitle } from "../stores.js";
 
@@ -23,7 +19,7 @@
 
 <div class="flex justify-center">
   <Block>
-    <Mo class="fill-md-light-surface-3" width="10em" height="10em" />
+    <IconMo class="fill-md-light-surface-3" width="10em" height="10em" />
   </Block>
 </div>
 

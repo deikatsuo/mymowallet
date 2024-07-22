@@ -7,8 +7,8 @@
     storePassword,
   } from "../stores";
   import { navigate } from "svelte-routing";
-  import MdWarning from "../components/MdWarning.svelte";
   import WebApp from "@twa-dev/sdk";
+  import IconWarning from "../components/IconWarning.svelte";
 
   WebApp.setHeaderColor("#ff0000");
   WebApp.setBackgroundColor("#ff0000");
@@ -33,7 +33,7 @@
 
 <div class="flex justify-center">
   <Block>
-    <MdWarning class="text-md-light-surface-3" width="10em" height="10em" />
+    <IconWarning class="text-md-light-surface-3" width="10em" height="10em" />
   </Block>
 </div>
 

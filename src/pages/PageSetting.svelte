@@ -3,22 +3,19 @@
   import { Block, BlockTitle, List, ListInput, Button } from "konsta/svelte";
 
   import {
-    storeTheme,
     storeTitle,
     storeActiveTab,
     storeAlert,
     storePassword,
     storeEncryptedPassword,
-    storeIsLogin,
     storeCallback,
     storeActiveWallet,
-    storeCurrency,
     storeDestroy,
   } from "../stores";
-  import { navigate } from "svelte-routing";
   import { encryptPassword } from "../utils";
-  import MdTheme from "../components/MdTheme.svelte";
-  import MdSetting from "../components/MdSetting.svelte";
+  import IconSetting from "../components/IconSetting.svelte";
+  import PageSettingCurrency from "./PageSettingCurrency.svelte";
+  import PageSettingTheme from "./PageSettingTheme.svelte";
 
   $storeTitle = "Setting";
   $storeActiveTab = "setting";
@@ -54,20 +51,11 @@
     mnemonic = $storeActiveWallet.wallet.mnemonic.phrase;
     $storePassword = { open: false, password: "" };
   }
-
-  let currencies = [
-    { value: "idr", view: "Indonesian Rupiah" },
-    { value: "usd", view: "US Dollar" },
-  ];
-  let themes = [
-    { value: "material", view: "Material" },
-    { value: "ios", view: "iOS" },
-  ];
 </script>
 
 <div class="flex justify-center">
   <Block>
-    <MdSetting
+    <IconSetting
       class="fill-md-light-surface-3 text-md-light-surface-3"
       width="10em"
       height="10em"
@@ -100,40 +88,9 @@
     </p>
   </Block>
 {/if}
+
 <BlockTitle>Local Currency</BlockTitle>
-<List strong inset>
-  <ListInput
-    outline
-    type="select"
-    dropdown
-    placeholder="Please choose..."
-    onChange={(e) => ($storeCurrency = e.target.value)}
-  >
-    <MdTheme slot="media" />
-    {#each currencies as currency}
-      <option
-        value={currency.value}
-        selected={currency.value == $storeCurrency}
-      >
-        {currency.view}
-      </option>
-    {/each}
-  </ListInput>
-</List>
+<PageSettingCurrency />
+
 <BlockTitle>Theme</BlockTitle>
-<List strong inset>
-  <ListInput
-    outline
-    type="select"
-    dropdown
-    placeholder="Please choose..."
-    onChange={(e) => ($storeTheme = e.target.value)}
-  >
-    <MdTheme slot="media" />
-    {#each themes as theme}
-      <option value={theme.value} selected={theme.value == $storeTheme}>
-        {theme.view}
-      </option>
-    {/each}
-  </ListInput>
-</List>
+<PageSettingTheme />

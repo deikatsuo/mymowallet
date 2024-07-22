@@ -1,6 +1,6 @@
 <script>
   import WebApp from "@twa-dev/sdk";
-  import { Mnemonic, Wallet } from "ethers";
+  import { Mnemonic } from "ethers";
   import { navigate } from "svelte-routing";
 
   import { Block, BlockTitle, List, ListInput, Button } from "konsta/svelte";
@@ -10,10 +10,9 @@
     storePassword,
     storeCallback,
     storeTitle,
-    storeIsLogin,
   } from "../stores";
   import { encryptAndBuild } from "../utils";
-  import MdImport from "../components/MdImport.svelte";
+  import IconImport from "../components/IconImport.svelte";
 
   $storeTitle = "Import Mo Wallet";
 
@@ -68,7 +67,7 @@
 
 <div class="flex justify-center">
   <Block>
-    <MdImport class="text-md-light-surface-3" width="10em" height="10em" />
+    <IconImport class="text-md-light-surface-3" width="10em" height="10em" />
   </Block>
 </div>
 

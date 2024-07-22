@@ -5,15 +5,14 @@
   import {
     storeAlert,
     storeCallback,
-    storeIsLogin,
     storePassword,
     storeTitle,
   } from "../stores";
   import { Block, BlockTitle, Button, Chip } from "konsta/svelte";
-  import MdCopy from "../components/MdCopy.svelte";
+  import IconCopy from "../components/IconCopy.svelte";
   import { encryptAndBuild } from "../utils";
-  import MdReload from "../components/MdReload.svelte";
-  import MdNewWallet from "../components/MdNewWallet.svelte";
+  import IconReload from "../components/IconReload.svelte";
+  import IconNewWallet from "../components/IconNewWallet.svelte";
 
   $storeTitle = "Create Mo Wallet";
 
@@ -70,7 +69,7 @@
 
 <div class="flex justify-center">
   <Block>
-    <MdNewWallet class="text-md-light-surface-3" width="10em" height="10em" />
+    <IconNewWallet class="text-md-light-surface-3" width="10em" height="10em" />
   </Block>
 </div>
 
@@ -83,10 +82,10 @@
 
 <Block>
   <div class="grid grid-cols-5 gap-x-4">
-    <Button class="bg-orange-500" onClick={() => generateMnemonic()}
-      ><MdReload class="w-6 h-6" /></Button
-    >
-    <Button onClick={() => copyMnemonic()}><MdCopy class="w-6 h-6" /></Button>
+    <Button class="bg-orange-500" onClick={() => generateMnemonic()}>
+      <IconReload class="w-6 h-6" />
+    </Button>
+    <Button onClick={() => copyMnemonic()}><IconCopy class="w-6 h-6" /></Button>
     <Button class="col-span-3" onClick={() => importNow()}>Import Now</Button>
   </div>
 </Block>
