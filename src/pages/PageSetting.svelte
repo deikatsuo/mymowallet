@@ -25,6 +25,11 @@
   let key;
   let mnemonic;
 
+  function hide() {
+    key = "";
+    mnemonic = "";
+  }
+
   function recover() {
     $storePassword.open = true;
     $storeCallback = showRecover;
@@ -66,7 +71,11 @@
 <BlockTitle>Wallet</BlockTitle>
 <Block strong inset class="space-y-2">
   <div class="grid grid-cols-2 gap-x-4">
-    <Button onClick={() => recover()}>Recover</Button>
+    {#if key || mnemonic}
+      <Button onClick={() => hide()}>Hide</Button>
+    {:else}
+      <Button onClick={() => recover()}>Recover</Button>
+    {/if}
     <Button onClick={() => ($storeDestroy = true)} class="bg-red-500"
       >Destroy</Button
     >
