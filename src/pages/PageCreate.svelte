@@ -10,9 +10,10 @@
   } from "../stores";
   import { Block, BlockTitle, Button, Chip } from "konsta/svelte";
   import IconCopy from "../components/IconCopy.svelte";
-  import { encryptAndBuild } from "../utils";
+  import { encryptAndBuild } from "../wallet";
   import IconReload from "../components/IconReload.svelte";
   import IconNewWallet from "../components/IconNewWallet.svelte";
+  import { copyText } from "../utils";
 
   $storeTitle = "Create Mo Wallet";
 
@@ -27,20 +28,6 @@
     entropy = ethers.randomBytes(32);
     mnemonic = ethers.Mnemonic.entropyToPhrase(entropy);
     arrMnemonic = mnemonic.split(" ");
-  }
-
-  function copyMnemonic() {
-    navigator.clipboard
-      .writeText(mnemonic)
-      .then(() => {
-        $storeAlert = { open: true, message: "Mnemonic copied successfully" };
-      })
-      .catch((err) => {
-        $storeAlert = {
-          open: true,
-          message: "Error copying nemonic phrase: " + err,
-        };
-      });
   }
 
   generateMnemonic();
@@ -65,6 +52,7 @@
 
     navigate("/");
   }
+  
 </script>
 
 <div class="flex justify-center">
@@ -85,7 +73,7 @@
     <Button class="bg-orange-500" onClick={() => generateMnemonic()}>
       <IconReload class="w-6 h-6" />
     </Button>
-    <Button onClick={() => copyMnemonic()}><IconCopy class="w-6 h-6" /></Button>
+    <Button onClick={() => copyText(mnemonic)}><IconCopy class="w-6 h-6" /></Button>
     <Button class="col-span-3" onClick={() => importNow()}>Import Now</Button>
   </div>
 </Block>

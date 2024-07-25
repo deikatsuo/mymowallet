@@ -21,7 +21,7 @@
     storeAlert,
     storeDestroy,
   } from "../stores";
-  import { decryptAndBuild, getToken } from "../utils";
+  import { decryptAndBuild, getToken } from "../wallet";
   import LibDestroy from "./LibDestroy.svelte";
 
   if ($storeIsLogin && !$storeEncryptedPassword) {

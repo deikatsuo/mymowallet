@@ -12,7 +12,7 @@
     storeActiveWallet,
     storeDestroy,
   } from "../stores";
-  import { encryptPassword } from "../utils";
+  import { encryptPassword } from "../wallet";
   import IconSetting from "../components/IconSetting.svelte";
   import PageSettingCurrency from "./PageSettingCurrency.svelte";
   import PageSettingTheme from "./PageSettingTheme.svelte";

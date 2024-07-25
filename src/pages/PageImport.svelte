@@ -11,7 +11,7 @@
     storeCallback,
     storeTitle,
   } from "../stores";
-  import { encryptAndBuild } from "../utils";
+  import { encryptAndBuild } from "../wallet";
   import IconImport from "../components/IconImport.svelte";
 
   $storeTitle = "Import Mo Wallet";

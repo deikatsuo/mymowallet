@@ -9,6 +9,7 @@
     BlockTitle,
     ListItem,
     List,
+    Navbar,
   } from "konsta/svelte";
 
   import {
@@ -22,7 +23,8 @@
   } from "../stores";
   import IconHistory from "../components/IconHistory.svelte";
   import IconMo from "../components/IconMo.svelte";
-  import { getToken } from "../utils";
+  import { getToken } from "../wallet";
+  import { truncateAddress } from "../utils";
 
   $storeTitle = "Wallet";
   $storeActiveTab = "wallet";
@@ -82,13 +84,13 @@
   }
 </script>
 
-<Toolbar></Toolbar>
-<Toolbar>
+<Toolbar outline={false}></Toolbar>
+<Toolbar outline={false}>
   <div class="w-full flex align-middle text-center justify-center">
-    {$storeActiveWallet.wallet.address}
+    {truncateAddress($storeActiveWallet.wallet.address)}
   </div>
 </Toolbar>
-<Toolbar top={true} outline={true}></Toolbar>
+<Toolbar outline={false}></Toolbar>
 
 <Block>
   <div class="grid grid-cols-5 gap-x-4">
