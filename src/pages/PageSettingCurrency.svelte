@@ -10,17 +10,26 @@
   ];
 
   const onCurrencyValueChange = (e) => {
-    $storeCurrency = e.target.value;
-    localStorage.localCurrency = $storeCurrency;
+    let symbol;
 
-    $storePrice = { price: 0, local: "" };
+    if (e.target.value === "idr") {
+      symbol = "Rp";
+    } else if (e.target.value === "usd") {
+      symbol = "$";
+    }
+
+    $storeCurrency = { currency: e.target.value, symbol: symbol };
+
+    localStorage.localCurrency = JSON.stringify($storeCurrency);
+
+    $storePrice = 0;
     localStorage.removeItem("localPrice");
     localStorage.removeItem("lastPriceUpdate");
   };
 </script>
 
 <List strong inset>
-  {#if $storeCurrency === "idr"}
+  {#if $storeCurrency.currency === "idr"}
     <ListInput
       outline
       type="select"
@@ -33,13 +42,13 @@
       {#each currencies as currency}
         <option
           value={currency.value}
-          selected={currency.value == $storeCurrency}
+          selected={currency.value == $storeCurrency.currency}
         >
           {currency.view}
         </option>
       {/each}
     </ListInput>
-  {:else if $storeCurrency === "usd"}
+  {:else if $storeCurrency.currency === "usd"}
     <ListInput
       outline
       type="select"
@@ -52,7 +61,7 @@
       {#each currencies as currency}
         <option
           value={currency.value}
-          selected={currency.value == $storeCurrency}
+          selected={currency.value == $storeCurrency.currency}
         >
           {currency.view}
         </option>

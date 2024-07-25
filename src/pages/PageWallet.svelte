@@ -47,7 +47,7 @@
     }
     const url =
       "https://api.coingecko.com/api/v3/simple/price?ids=mo-chain&vs_currencies=" +
-      $storeCurrency;
+      $storeCurrency.currency;
     const headers = new Headers();
     headers.append("accept", "application/json");
     headers.append("x-cg-demo-api-key", "CG-phhTmjyHMZVp94VnuTSZzLFc");
@@ -63,16 +63,10 @@
         return response.json();
       })
       .then((data) => {
-        if ($storeCurrency === "idr") {
-          $storePrice = {
-            price: data["mo-chain"].idr,
-            local: `Rp${data["mo-chain"].idr}`,
-          };
-        } else if ($storeCurrency === "usd") {
-          $storePrice = {
-            price: data["mo-chain"].usd,
-            local: `$${data["mo-chain"].usd}`,
-          };
+        if ($storeCurrency.currency === "idr") {
+          $storePrice = data["mo-chain"].idr;
+        } else if ($storeCurrency.currency === "usd") {
+          $storePrice = data["mo-chain"].usd;
         }
         localStorage.localPrice = JSON.stringify($storePrice);
         localStorage.lastPriceUpdate = Date.now();
@@ -112,10 +106,10 @@
 <List strongIos outlineIos>
   <ListItem
     link
-    header={$storePrice.local}
-    title={$storeBalance.balance}
-    footer={$storeBalance.local +
-      parseFloat($storeBalance.balance) * $storePrice.price}
+    header={$storeCurrency.symbol+$storePrice}
+    title={$storeBalance.toString()}
+    footer={$storeCurrency.symbol +
+      $storeBalance * $storePrice}
     after="MO"
   >
     <IconMo class="w-6 h-6" slot="media" />

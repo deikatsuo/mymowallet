@@ -22,7 +22,11 @@ export const storeActiveWallet = writable({
 });
 export const storeMain = writable(ethers.HDNodeWallet);
 export const storeTheme = writable("material");
-export const storeCurrency = writable(localStorage.localCurrency ? localStorage.localCurrency : "usd");
+let localCurrency = JSON.parse(localStorage.localCurrency);
+export const storeCurrency = writable({
+  currency: localCurrency.currency ? localCurrency.currency : "usd",
+  symbol: localCurrency.symbol ? localCurrency.symbol : "$",
+});
 export const storeDestroy = writable(false);
-export const storePrice = writable({ price: 0, local: "" });
-export const storeBalance = writable({ balance: "", local: ""});
+export const storePrice = writable(0);
+export const storeBalance = writable();

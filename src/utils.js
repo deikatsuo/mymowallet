@@ -124,10 +124,10 @@ export function getToken() {
 async function waitToken(wallet) {
   let balance = await moProvider.getBalance(wallet.address);
   let currency = get(storeCurrency);
-  if (currency === "idr") {
-    storeBalance.set({ balance: ethers.formatEther(balance), local: "Rp" });
-  } else if (currency === "usd") {
-    storeBalance.set({ balance: ethers.formatEther(balance), local: "$" });
+  if (currency.currency === "idr") {
+    storeBalance.set(parseFloat(ethers.formatEther(balance)));
+  } else if (currency.currency === "usd") {
+    storeBalance.set(parseFloat(ethers.formatEther(balance)));
   }
   console.log("Balance ", balance);
   console.log("Balance Format ", ethers.formatEther(balance));
