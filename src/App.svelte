@@ -29,6 +29,7 @@
   } from "./stores";
 
   import IconPasswordAdd from "./components/IconPasswordAdd.svelte";
+  import LibDestroy from "./libs/LibDestroy.svelte";
 
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
@@ -46,7 +47,11 @@
 <App theme={$storeTheme}>
   <Page>
     {#if $storeIsLogin}
-      <LibApp />
+      {#if $storeDestroy}
+        <LibDestroy />
+      {:else}
+        <LibApp />
+      {/if}
     {:else}
       <LibWelcome />
     {/if}

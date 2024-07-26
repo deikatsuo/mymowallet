@@ -19,7 +19,6 @@
     localStorage.clear();
     $storeIsLogin = false;
     $storeDestroy = false;
-
     navigate("/");
   }
 

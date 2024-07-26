@@ -20,11 +20,13 @@
     storeEncryptedPassword,
     storeBalance,
     storeActiveWallet,
+    storeWallets,
   } from "../stores";
   import IconHistory from "../components/IconHistory.svelte";
   import IconMo from "../components/IconMo.svelte";
   import { getToken } from "../wallet";
   import { truncateAddress } from "../utils";
+  import IconBitcoinWallet from "../components/IconBitcoinWallet.svelte";
 
   $storeTitle = "Wallet";
   $storeActiveTab = "wallet";
@@ -82,12 +84,27 @@
   if ($storeEncryptedPassword) {
     getToken();
   }
+
+  console.log("Store Wallets ", $storeWallets);
+  console.log("Store Wallets Lenght ", $storeWallets.length);
 </script>
 
-<Toolbar outline={false}></Toolbar>
+<Navbar
+  outline={false}
+  centerTitle
+  titleClass="text-base"
+  title={truncateAddress($storeActiveWallet.wallet.address)}
+  class="z-30"
+>
+  <Link navbar iconOnly slot="right">
+    <Icon badge={$storeWallets.length} badgeColors={{ bg: "bg-blue-500" }}>
+      <IconBitcoinWallet class="w-6 h-6" />
+    </Icon>
+  </Link>
+</Navbar>
 <Toolbar outline={false}>
   <div class="w-full flex align-middle text-center justify-center">
-    {truncateAddress($storeActiveWallet.wallet.address)}
+    {$storeCurrency.symbol + $storeBalance * $storePrice}
   </div>
 </Toolbar>
 <Toolbar outline={false}></Toolbar>
@@ -108,12 +125,26 @@
 <List strongIos outlineIos>
   <ListItem
     link
-    header={$storeCurrency.symbol+$storePrice}
+    header={$storeCurrency.symbol + $storePrice}
     title={$storeBalance.toString()}
-    footer={$storeCurrency.symbol +
-      $storeBalance * $storePrice}
+    footer={$storeCurrency.symbol + $storeBalance * $storePrice}
     after="MO"
   >
     <IconMo class="w-6 h-6" slot="media" />
   </ListItem>
 </List>
+
+<Block strong inset class="space-y-4">
+  <p>Here comes left panel.</p>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+    faucibus mauris leo, eu bibendum neque congue non. Ut leo mauris, eleifend
+    eu commodo a, egestas ac urna. Maecenas in lacus faucibus, viverra ipsum
+    pulvinar, molestie arcu. Etiam lacinia venenatis dignissim. Suspendisse non
+    nisl semper tellus malesuada suscipit eu et eros. Nulla eu enim quis quam
+    elementum vulputate. Mauris ornare consequat nunc viverra pellentesque.
+    Aenean semper eu massa sit amet aliquam. Integer et neque sed libero mollis
+    elementum at vitae ligula. Vestibulum pharetra sed libero sed porttitor.
+    Suspendisse a faucibus lectus.
+  </p>
+</Block>

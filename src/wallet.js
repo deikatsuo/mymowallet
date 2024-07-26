@@ -99,7 +99,7 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
   }
 
   localStorage.wallets = JSON.stringify(wallets);
-  storeWallets.set(localStorage.wallets);
+  storeWallets.set(JSON.parse(localStorage.wallets));
 }
 
 export function setStoreActiveWallet(
@@ -129,9 +129,4 @@ async function waitToken(wallet) {
   } else if (currency.currency === "usd") {
     storeBalance.set(parseFloat(ethers.formatEther(balance)));
   }
-  console.log("Balance ", balance);
-  console.log("Balance Format ", ethers.formatEther(balance));
-  console.log("Balance Number ", parseFloat(ethers.formatEther(balance)));
 }
-
-

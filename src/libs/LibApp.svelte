@@ -19,7 +19,6 @@
     storeActiveTab,
     storeCallback,
     storeAlert,
-    storeDestroy,
   } from "../stores";
   import { decryptAndBuild, getToken } from "../wallet";
   import LibDestroy from "./LibDestroy.svelte";
@@ -53,45 +52,41 @@
   }
 </script>
 
-{#if $storeDestroy}
-  <LibDestroy />
-{:else}
-  <Tabbar labels icons class="left-0 bottom-0 fixed">
-    <TabbarLink
-      active={$storeActiveTab === "wallet"}
-      onClick={() => navigate("/")}
-      label="Wallet"
-    >
-      <Icon slot="icon" badge="" badgeColors={{ bg: "bg-green-500" }}>
-        <IconWallet class="w-6 h-6" />
-      </Icon>
-    </TabbarLink>
-    <TabbarLink
-      active={$storeActiveTab === "staking"}
-      onClick={() => navigate("/staking")}
-      label="Staking"
-    >
-      <Icon slot="icon" badge="" badgeColors={{ bg: "bg-red-500" }}>
-        <IconFinance class="w-6 h-6" />
-      </Icon>
-    </TabbarLink>
-    <TabbarLink
-      active={$storeActiveTab === "setting"}
-      onClick={() => navigate("/setting")}
-      label="Setting"
-    >
-      <Icon slot="icon" badge="" badgeColors={{ bg: "bg-red-500" }}>
-        <IconGear class="w-6 h-6" />
-      </Icon>
-    </TabbarLink>
-  </Tabbar>
+<Tabbar labels icons class="left-0 bottom-0 fixed">
+  <TabbarLink
+    active={$storeActiveTab === "wallet"}
+    onClick={() => navigate("/")}
+    label="Wallet"
+  >
+    <Icon slot="icon" badge="" badgeColors={{ bg: "bg-green-500" }}>
+      <IconWallet class="w-6 h-6" />
+    </Icon>
+  </TabbarLink>
+  <TabbarLink
+    active={$storeActiveTab === "staking"}
+    onClick={() => navigate("/staking")}
+    label="Staking"
+  >
+    <Icon slot="icon" badge="" badgeColors={{ bg: "bg-red-500" }}>
+      <IconFinance class="w-6 h-6" />
+    </Icon>
+  </TabbarLink>
+  <TabbarLink
+    active={$storeActiveTab === "setting"}
+    onClick={() => navigate("/setting")}
+    label="Setting"
+  >
+    <Icon slot="icon" badge="" badgeColors={{ bg: "bg-red-500" }}>
+      <IconGear class="w-6 h-6" />
+    </Icon>
+  </TabbarLink>
+</Tabbar>
 
-  <main class="pb-16">
-    <Router>
-      <Route path="/" component={PageWallet} />
-      <Route path="/staking" component={PageStaking} />
-      <Route path="/setting" component={PageSetting} />
-      <Route component={PageNotFound} />
-    </Router>
-  </main>
-{/if}
+<main class="pb-16">
+  <Router>
+    <Route path="/" component={PageWallet} />
+    <Route path="/staking" component={PageStaking} />
+    <Route path="/setting" component={PageSetting} />
+    <Route component={PageNotFound} />
+  </Router>
+</main>

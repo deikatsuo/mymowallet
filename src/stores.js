@@ -12,8 +12,9 @@ export const storePassword = writable({
 export const storeEncryptedPassword = writable();
 export const storeCallback = writable(function () {});
 export const storeIsLogin = writable(localStorage.login ? true : false);
+console.log("Run");
 export const storeWallets = writable(
-  localStorage.wallets ? localStorage.wallets : []
+  localStorage.wallets ? JSON.parse(localStorage.wallets) : []
 );
 export const storeActiveWallet = writable({
   wallet: ethers.HDNodeWallet,
