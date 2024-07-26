@@ -13,12 +13,12 @@ export function copyText(text) {
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      storeAlert.set({ open: true, message: "Mnemonic copied successfully" });
+      storeAlert.set({ open: true, message: "Copied successfully" });
     })
     .catch((err) => {
       storeAlert.set({
         open: true,
-        message: "Error copying nemonic phrase: " + err,
+        message: "Error copying: " + err,
       });
     });
 }

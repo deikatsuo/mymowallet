@@ -38,8 +38,9 @@
     setStoreActiveWallet,
     updateBalance,
   } from "../wallet";
-  import { truncateAddress } from "../utils";
+  import { copyText, truncateAddress } from "../utils";
   import IconBitcoinWallet from "../components/IconBitcoinWallet.svelte";
+  import IconCopy from "../components/IconCopy.svelte";
 
   $storeTitle = "Wallet";
   $storeActiveTab = "wallet";
@@ -118,6 +119,18 @@
   <Link
     navbar
     iconOnly
+    slot="left"
+    onClick={() => {
+      copyText($storeActiveWallet.wallet.address);
+    }}
+  >
+    <Icon>
+      <IconCopy class="w-6 h-6" />
+    </Icon>
+  </Link>
+  <Link
+    navbar
+    iconOnly
     slot="right"
     onClick={() => {
       updateBalance(), (openPanelWallets = true);
@@ -163,7 +176,6 @@
 </Block>
 
 <Block strong inset class="space-y-4">
-  <p>Here comes left panel.</p>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
     faucibus mauris leo, eu bibendum neque congue non. Ut leo mauris, eleifend
