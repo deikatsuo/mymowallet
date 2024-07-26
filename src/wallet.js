@@ -68,12 +68,35 @@ export function decryptAndBuild(password) {
 }
 
 export function buildWalletFromSeed(seed) {
-  let wallet = Wallet.fromPhrase(seed);
+  let mainWallet = Wallet.fromPhrase(seed);
 
-  storeMain.set(wallet);
+  storeMain.set(mainWallet);
 
-  addWallet(wallet.address);
-  setStoreActiveWallet(wallet);
+  addWallet(mainWallet.address);
+  let wallets = get(storeWallets);
+  let isExistActive;
+  let activeType;
+  let activeNumber;
+  wallets.some((w) => {
+    if (w.active === true){
+      isExistActive = true;
+      activeNumber = w.number;
+      activeType = w.type;
+    }
+  });
+
+  if (!isExistActive) {
+    setStoreActiveWallet(mainWallet);
+  } else {
+    if (activeType === "parent") {
+      setStoreActiveWallet(mainWallet);
+    } else if (activeType === "child") {
+      buildChildWallet(activeNumber);
+    } else {
+      // not implemented
+    }
+    
+  }
 
   storeIsLogin.set(localStorage.login);
 }
@@ -107,14 +130,13 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
     type: type,
     number: number,
     key: key,
-    active: true,
+    active: false,
     balance: 0,
   };
   let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
   if (wallets.length > 0) {
     const isAddressExists = wallets.some((item) => item.address === address);
     if (!isAddressExists) {
-      wallets.some((iw) => (iw.active = false));
       wallets.push(wallet);
     }
   } else {
