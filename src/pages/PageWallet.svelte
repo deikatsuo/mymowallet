@@ -32,8 +32,10 @@
   import IconMo from "../components/IconMo.svelte";
   import {
     addWallet,
-    getActiveWalletBalance,
+    buildChildWallet,
+    updateActiveWalletBalance,
     nthChild,
+    setStoreActiveWallet,
     updateBalance,
   } from "../wallet";
   import { truncateAddress } from "../utils";
@@ -93,7 +95,7 @@
   getPrice();
 
   if ($storeEncryptedPassword) {
-    getActiveWalletBalance($storeActiveWallet.wallet.address);
+    updateActiveWalletBalance();
   }
 
   let openPanelWallets = false;
@@ -104,15 +106,6 @@
     popoverAddWalletTargetEl = targetEl;
     openPopoverAddWallet = true;
   };
-
-  function addChildWallet() {
-    let nth = nthChild();
-    let wallet = $storeMain.deriveChild(nth);
-    addWallet(wallet.address, "child", nth);
-    updateBalance();
-  }
-
-  console.log($storeWallets);
 </script>
 
 <Navbar
@@ -201,16 +194,47 @@
     </Block>
     <List dividers>
       {#each $storeWallets as wallet}
-        <ListItem
-          chevron={wallet.active}
-          link
-          header={truncateAddress(wallet.address)}
-          title={wallet.balance.toString()}
-          footer={$storeCurrency.symbol + wallet.balance * $storePrice}
-          after="MO"
-        >
-          <IconMo class="w-6 h-6" slot="media" />
-        </ListItem>
+        {#if wallet.type === "parent"}
+          <ListItem
+            chevron={false}
+            menuListItem={wallet.active}
+            link
+            header={truncateAddress(wallet.address)}
+            title={wallet.balance.toString()}
+            footer={$storeCurrency.symbol + wallet.balance * $storePrice}
+            after="MO"
+            onClick={() => {
+              setStoreActiveWallet($storeMain), updateActiveWalletBalance();
+            }}
+          >
+            <IconMo class="w-6 h-6" slot="media" />
+          </ListItem>
+        {:else if wallet.type === "child"}
+          <ListItem
+            chevron={false}
+            menuListItem={wallet.active}
+            link
+            header={truncateAddress(wallet.address)}
+            title={wallet.balance.toString()}
+            footer={$storeCurrency.symbol + wallet.balance * $storePrice}
+            after="MO"
+            onClick={() => buildChildWallet(wallet.number)}
+          >
+            <IconMo class="w-6 h-6" slot="media" />
+          </ListItem>
+        {:else}
+          <ListItem
+            chevron={false}
+            menuListItem={wallet.active}
+            link
+            header={truncateAddress(wallet.address)}
+            title={wallet.balance.toString()}
+            footer={$storeCurrency.symbol + wallet.balance * $storePrice}
+            after="MO"
+          >
+            <IconMo class="w-6 h-6" slot="media" />
+          </ListItem>
+        {/if}
       {/each}
     </List>
   </Page>
@@ -226,7 +250,7 @@
       title="Add new wallet"
       link
       onClick={() => {
-        addChildWallet(), (openPopoverAddWallet = false);
+        buildChildWallet(), (openPopoverAddWallet = false);
       }}
     />
     <ListItem

@@ -78,6 +78,18 @@ export function buildWalletFromSeed(seed) {
   storeIsLogin.set(localStorage.login);
 }
 
+export function buildChildWallet(number = -1) {
+  let nth = nthChild();
+  if (number >= 0) {
+    nth = number;
+  }
+  let wallet = get(storeMain).deriveChild(nth);
+  addWallet(wallet.address, "child", nth);
+  setStoreActiveWallet(wallet);
+  updateActiveWalletBalance();
+  updateBalance();
+}
+
 export function nthChild() {
   let child = 0;
   let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
@@ -128,11 +140,22 @@ export function setStoreActiveWallet(
     number: number,
   };
 
+  let wallets = get(storeWallets);
+  for (let i = 0; i < wallets.length; i++) {
+    let address = wallets[i].address;
+    if (address === wallet.address) {
+      wallets[i].active = true;
+    } else {
+      wallets[i].active = false;
+    }
+  }
+  updateLocalStorageWallets(wallets);
+
   storeActiveWallet.set(activeWallet);
 }
 
-export function getActiveWalletBalance(address) {
-  waitActiveWalletBalance(address);
+export function updateActiveWalletBalance() {
+  waitActiveWalletBalance(get(storeActiveWallet).wallet.address);
 }
 
 async function waitActiveWalletBalance(address) {

@@ -21,7 +21,7 @@
     storeAlert,
     storeActiveWallet,
   } from "../stores";
-  import { decryptAndBuild, getActiveWalletBalance } from "../wallet";
+  import { decryptAndBuild, updateActiveWalletBalance } from "../wallet";
   import LibDestroy from "./LibDestroy.svelte";
 
   if ($storeIsLogin && !$storeEncryptedPassword) {
@@ -49,7 +49,7 @@
       open: false,
       password: "",
     };
-    getActiveWalletBalance($storeActiveWallet.wallet.address);
+    updateActiveWalletBalance();
   }
 </script>
 
