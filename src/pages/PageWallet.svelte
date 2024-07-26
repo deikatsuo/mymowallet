@@ -10,6 +10,11 @@
     ListItem,
     List,
     Navbar,
+    Panel,
+    Page,
+    Popover,
+    MenuList,
+    MenuListItem,
   } from "konsta/svelte";
 
   import {
@@ -21,10 +26,16 @@
     storeBalance,
     storeActiveWallet,
     storeWallets,
+    storeMain,
   } from "../stores";
   import IconHistory from "../components/IconHistory.svelte";
   import IconMo from "../components/IconMo.svelte";
-  import { getToken } from "../wallet";
+  import {
+    addWallet,
+    getActiveWalletBalance,
+    nthChild,
+    updateBalance,
+  } from "../wallet";
   import { truncateAddress } from "../utils";
   import IconBitcoinWallet from "../components/IconBitcoinWallet.svelte";
 
@@ -82,11 +93,26 @@
   getPrice();
 
   if ($storeEncryptedPassword) {
-    getToken();
+    getActiveWalletBalance($storeActiveWallet.wallet.address);
   }
 
-  console.log("Store Wallets ", $storeWallets);
-  console.log("Store Wallets Lenght ", $storeWallets.length);
+  let openPanelWallets = false;
+  let openPopoverAddWallet = false;
+  let popoverAddWalletTargetEl = null;
+
+  const openPopover = (targetEl) => {
+    popoverAddWalletTargetEl = targetEl;
+    openPopoverAddWallet = true;
+  };
+
+  function addChildWallet() {
+    let nth = nthChild();
+    let wallet = $storeMain.deriveChild(nth);
+    addWallet(wallet.address, "child", nth);
+    updateBalance();
+  }
+
+  console.log($storeWallets);
 </script>
 
 <Navbar
@@ -96,7 +122,14 @@
   title={truncateAddress($storeActiveWallet.wallet.address)}
   class="z-30"
 >
-  <Link navbar iconOnly slot="right">
+  <Link
+    navbar
+    iconOnly
+    slot="right"
+    onClick={() => {
+      updateBalance(), (openPanelWallets = true);
+    }}
+  >
     <Icon badge={$storeWallets.length} badgeColors={{ bg: "bg-blue-500" }}>
       <IconBitcoinWallet class="w-6 h-6" />
     </Icon>
@@ -122,17 +155,19 @@
 </Block>
 
 <BlockTitle>Tokens</BlockTitle>
-<List strongIos outlineIos>
-  <ListItem
-    link
-    header={$storeCurrency.symbol + $storePrice}
-    title={$storeBalance.toString()}
-    footer={$storeCurrency.symbol + $storeBalance * $storePrice}
-    after="MO"
-  >
-    <IconMo class="w-6 h-6" slot="media" />
-  </ListItem>
-</List>
+<Block>
+  <List outline>
+    <ListItem
+      link
+      header={$storeCurrency.symbol + $storePrice}
+      title={$storeBalance.toString()}
+      footer={$storeCurrency.symbol + $storeBalance * $storePrice}
+      after="MO"
+    >
+      <IconMo class="w-6 h-6" slot="media" />
+    </ListItem>
+  </List>
+</Block>
 
 <Block strong inset class="space-y-4">
   <p>Here comes left panel.</p>
@@ -148,3 +183,56 @@
     Suspendisse a faucibus lectus.
   </p>
 </Block>
+
+<Panel side="right" opened={openPanelWallets}>
+  <Page>
+    <Navbar title="Wallets">
+      <Link slot="right" navbar onClick={() => (openPanelWallets = false)}>
+        Close
+      </Link>
+    </Navbar>
+    <Block class="my-3">
+      <Button
+        small
+        outline
+        class="add-wallet-button"
+        onClick={() => openPopover(".add-wallet-button")}>Add wallet</Button
+      >
+    </Block>
+    <List dividers>
+      {#each $storeWallets as wallet}
+        <ListItem
+          chevron={wallet.active}
+          link
+          header={truncateAddress(wallet.address)}
+          title={wallet.balance.toString()}
+          footer={$storeCurrency.symbol + wallet.balance * $storePrice}
+          after="MO"
+        >
+          <IconMo class="w-6 h-6" slot="media" />
+        </ListItem>
+      {/each}
+    </List>
+  </Page>
+</Panel>
+
+<Popover
+  opened={openPopoverAddWallet}
+  target={popoverAddWalletTargetEl}
+  onBackdropClick={() => (openPopoverAddWallet = false)}
+>
+  <List nested>
+    <ListItem
+      title="Add new wallet"
+      link
+      onClick={() => {
+        addChildWallet(), (openPopoverAddWallet = false);
+      }}
+    />
+    <ListItem
+      title="Import wallet"
+      link
+      onClick={() => (openPopoverAddWallet = false)}
+    />
+  </List>
+</Popover>

@@ -63,9 +63,8 @@ export function decryptAndBuild(password) {
   if (!decSeed) {
     throw new Error("Wrong password");
   }
-  storeEncryptedPassword.set(encPassword);
-
   buildWalletFromSeed(decSeed);
+  storeEncryptedPassword.set(encPassword);
 }
 
 export function buildWalletFromSeed(seed) {
@@ -79,6 +78,17 @@ export function buildWalletFromSeed(seed) {
   storeIsLogin.set(localStorage.login);
 }
 
+export function nthChild() {
+  let child = 0;
+  let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
+  wallets.some((wallet) => {
+    if (wallet.type === "child") {
+      child += 1;
+    }
+  });
+  return child;
+}
+
 export function addWallet(address, type = "parent", number = -1, key = "") {
   let wallet = {
     address: address,
@@ -86,18 +96,23 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
     number: number,
     key: key,
     active: true,
+    balance: 0,
   };
   let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
   if (wallets.length > 0) {
     const isAddressExists = wallets.some((item) => item.address === address);
     if (!isAddressExists) {
-      wallets.some((item) => (item.address = false));
+      wallets.some((iw) => (iw.active = false));
       wallets.push(wallet);
     }
   } else {
     wallets.push(wallet);
   }
 
+  updateLocalStorageWallets(wallets);
+}
+
+function updateLocalStorageWallets(wallets) {
   localStorage.wallets = JSON.stringify(wallets);
   storeWallets.set(JSON.parse(localStorage.wallets));
 }
@@ -105,7 +120,7 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
 export function setStoreActiveWallet(
   wallet = ethers.HDNodeWallet,
   type = "parent",
-  number = 0
+  number = -1
 ) {
   let activeWallet = {
     wallet: wallet,
@@ -116,17 +131,25 @@ export function setStoreActiveWallet(
   storeActiveWallet.set(activeWallet);
 }
 
-export function getToken() {
-  let wallet = get(storeActiveWallet).wallet;
-  waitToken(wallet);
+export function getActiveWalletBalance(address) {
+  waitActiveWalletBalance(address);
 }
 
-async function waitToken(wallet) {
-  let balance = await moProvider.getBalance(wallet.address);
-  let currency = get(storeCurrency);
-  if (currency.currency === "idr") {
-    storeBalance.set(parseFloat(ethers.formatEther(balance)));
-  } else if (currency.currency === "usd") {
-    storeBalance.set(parseFloat(ethers.formatEther(balance)));
+async function waitActiveWalletBalance(address) {
+  let balance = await moProvider.getBalance(address);
+  storeBalance.set(parseFloat(ethers.formatEther(balance)));
+}
+
+export async function updateBalance() {
+  let wallets = get(storeWallets);
+  for (let i = 0; i < wallets.length; i++) {
+    let balance = await waitUpdateBalance(wallets[i].address);
+    wallets[i].balance = parseFloat(ethers.formatEther(balance));
   }
+  updateLocalStorageWallets(wallets);
+}
+
+async function waitUpdateBalance(address) {
+  let balance = await moProvider.getBalance(address);
+  return balance;
 }
