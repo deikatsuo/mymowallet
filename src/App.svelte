@@ -30,6 +30,7 @@
 
   import IconPasswordAdd from "./components/IconPasswordAdd.svelte";
   import LibDestroy from "./libs/LibDestroy.svelte";
+  import { navigate } from "svelte-routing";
 
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
@@ -80,6 +81,17 @@
           onClick={() => (
             ($storeDestroy = true), ($storePassword.open = false)
           )}>Forgot Password? Destroy the Wallet</Link
+        >
+      </BlockFooter>
+      <BlockFooter>
+        <Link
+          onClick={() => (
+            ($storePassword.open = false),
+            localStorage.clear(),
+            ($storeIsLogin = false),
+            ($storeDestroy = false),
+            navigate("/")
+          )}>Force Destroy</Link
         >
       </BlockFooter>
     {/if}
