@@ -57,8 +57,6 @@
   </ListInput>
 </List>
 
-<Fab
-  class="fixed right-4-safe top-10-safe z-20"
->
+<Fab class="fixed right-4-safe ios:bottom-16-safe bottom- material:bottom-24-safe z-20">
   <IconQrScan slot="icon" />
 </Fab>
