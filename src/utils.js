@@ -1,4 +1,4 @@
-import { storeAlert } from "./stores";
+import { storeAlert, storeToast } from "./stores";
 
 export function truncateAddress(address = "0x") {
   let endChars = 5;
@@ -13,7 +13,10 @@ export function copyText(text) {
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      storeAlert.set({ open: true, message: "Copied successfully" });
+      storeToast.set({ open: true, message: "Copied successfully" });
+      setTimeout(() => {
+        storeToast.set({ open: false, message: "" });
+      }, 3000);
     })
     .catch((err) => {
       storeAlert.set({

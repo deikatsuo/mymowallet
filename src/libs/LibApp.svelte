@@ -23,6 +23,8 @@
   } from "../stores";
   import { decryptAndBuild, updateActiveWalletBalance } from "../wallet";
   import LibDestroy from "./LibDestroy.svelte";
+  import PageWalletTransfer from "../pages/PageWalletTransfer.svelte";
+  import PageWalletReceive from "../pages/PageWalletReceive.svelte";
 
   if ($storeIsLogin && !$storeEncryptedPassword) {
     $storePassword = { open: true, hideCancleButton: true };
@@ -86,6 +88,7 @@
 <main class="pb-16">
   <Router>
     <Route path="/" component={PageWallet} />
+    <Route path="/wallet/transfer" component={PageWalletTransfer} />
     <Route path="/staking" component={PageStaking} />
     <Route path="/setting" component={PageSetting} />
     <Route component={PageNotFound} />

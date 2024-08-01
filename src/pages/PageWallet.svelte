@@ -15,6 +15,7 @@
     Popover,
     MenuList,
     MenuListItem,
+    Popup,
   } from "konsta/svelte";
 
   import {
@@ -41,6 +42,8 @@
   import { copyText, truncateAddress } from "../utils";
   import IconBitcoinWallet from "../components/IconBitcoinWallet.svelte";
   import IconCopy from "../components/IconCopy.svelte";
+  import { navigate } from "svelte-routing";
+  import PageWalletReceive from "./PageWalletReceive.svelte";
 
   $storeTitle = "Wallet";
   $storeActiveTab = "wallet";
@@ -107,6 +110,8 @@
     popoverAddWalletTargetEl = targetEl;
     openPopoverAddWallet = true;
   };
+
+  let receivePopupOpen = false;
 </script>
 
 <Navbar
@@ -150,8 +155,22 @@
 
 <Block>
   <div class="grid grid-cols-5 gap-x-4">
-    <Button class="col-span-2">Receive</Button>
-    <Button class="col-span-2">Send</Button>
+    <Button
+      class="col-span-2"
+      onClick={() => {
+        navigate("/wallet/transfer");
+      }}
+    >
+      Send
+    </Button>
+    <Button
+      class="col-span-2"
+      onClick={() => {
+        receivePopupOpen = true;
+      }}
+    >
+      Receive
+    </Button>
     <Link iconOnly>
       <Icon badge="0" badgeColors={{ bg: "bg-red-500" }}>
         <IconHistory class="w-6 h-6" />
@@ -189,7 +208,11 @@
   </p>
 </Block>
 
-<Panel side="right" opened={openPanelWallets}>
+<Panel
+  side="right"
+  opened={openPanelWallets}
+  onBackdropClick={() => (openPanelWallets = false)}
+>
   <Page>
     <Navbar title="Wallets">
       <Link slot="right" navbar onClick={() => (openPanelWallets = false)}>
@@ -206,47 +229,26 @@
     </Block>
     <List dividers>
       {#each $storeWallets as wallet}
-        {#if wallet.type === "parent"}
-          <ListItem
-            chevron={false}
-            menuListItem={wallet.active}
-            link
-            header={truncateAddress(wallet.address)}
-            title={wallet.balance.toString()}
-            footer={$storeCurrency.symbol + wallet.balance * $storePrice}
-            after="MO"
-            onClick={() => {
+        <ListItem
+          chevron={false}
+          menuListItem={wallet.active}
+          link
+          header={truncateAddress(wallet.address)}
+          title={wallet.balance.toString()}
+          footer={$storeCurrency.symbol + wallet.balance * $storePrice}
+          after="MO"
+          onClick={() => {
+            if (wallet.type === "parent") {
               setStoreActiveWallet($storeMain), updateActiveWalletBalance();
-            }}
-          >
-            <IconMo class="w-6 h-6" slot="media" />
-          </ListItem>
-        {:else if wallet.type === "child"}
-          <ListItem
-            chevron={false}
-            menuListItem={wallet.active}
-            link
-            header={truncateAddress(wallet.address)}
-            title={wallet.balance.toString()}
-            footer={$storeCurrency.symbol + wallet.balance * $storePrice}
-            after="MO"
-            onClick={() => buildChildWallet(wallet.number)}
-          >
-            <IconMo class="w-6 h-6" slot="media" />
-          </ListItem>
-        {:else}
-          <ListItem
-            chevron={false}
-            menuListItem={wallet.active}
-            link
-            header={truncateAddress(wallet.address)}
-            title={wallet.balance.toString()}
-            footer={$storeCurrency.symbol + wallet.balance * $storePrice}
-            after="MO"
-          >
-            <IconMo class="w-6 h-6" slot="media" />
-          </ListItem>
-        {/if}
+            } else if (wallet.type === "child") {
+              buildChildWallet(wallet.number);
+            } else {
+              // import wallet, not implemented
+            }
+          }}
+        >
+          <IconMo class="w-6 h-6" slot="media" />
+        </ListItem>
       {/each}
     </List>
   </Page>
@@ -272,3 +274,19 @@
     />
   </List>
 </Popover>
+
+<Popup
+  opened={receivePopupOpen}
+  onBackdropClick={() => (receivePopupOpen = false)}
+>
+  <Page>
+    <Navbar title="Deposit">
+      <Link slot="right" navbar onClick={() => (receivePopupOpen = false)}>
+        Close
+      </Link>
+    </Navbar>
+    {#if receivePopupOpen}
+      <PageWalletReceive />
+    {/if}
+  </Page>
+</Popup>

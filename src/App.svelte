@@ -13,6 +13,7 @@
     Button,
     BlockFooter,
     Link,
+    Toast,
   } from "konsta/svelte";
 
   import LibApp from "./libs/LibApp.svelte";
@@ -23,6 +24,7 @@
     storeTitle,
     storeIsLogin,
     storeAlert,
+    storeToast,
     storePassword,
     storeCallback,
     storeDestroy,
@@ -129,3 +131,7 @@
     >
   </svelte:fragment>
 </Dialog>
+
+<Toast position="center" opened={$storeToast.open}>
+  <div class="shrink">{$storeToast.message}</div>
+</Toast>

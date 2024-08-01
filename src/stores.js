@@ -4,6 +4,7 @@ import { writable } from "svelte/store";
 export const storeTitle = writable("");
 export const storeActiveTab = writable("");
 export const storeAlert = writable({ open: false, message: "" });
+export const storeToast = writable({ open: false, message: "" });
 export const storePassword = writable({
   open: false,
   hideCancleButton: false,
