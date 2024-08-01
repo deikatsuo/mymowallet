@@ -25,3 +25,7 @@ export function copyText(text) {
       });
     });
 }
+
+export function validAmount(e) {
+  return !isNaN(e) && !isNaN(parseFloat(e));
+};

@@ -1,9 +1,10 @@
 <script>
   import { Block, Button, BlockTitle, List, ListInput } from "konsta/svelte";
   import QRCodeStyling from "qr-code-styling";
-  import { storeActiveWallet, storeToast } from "../stores";
+  import { storeActiveWallet, storeCurrency, storeToast } from "../stores";
   import IconCurrencyUsd from "../components/IconCurrencyUsd.svelte";
-  import { copyText } from "../utils";
+  import { copyText, validAmount } from "../utils";
+  import IconCurrencyIdr from "../components/IconCurrencyIdr.svelte";
 
   let amount;
   let qrBlobURL;
@@ -30,10 +31,6 @@
       }
       generateQR();
     }
-  };
-
-  const validAmount = (e) => {
-    return !isNaN(e) && !isNaN(parseFloat(e));
   };
 
   function generateQR() {
@@ -77,15 +74,28 @@
 </div>
 <Block class="space-y-4">
   <List strongIos insetIos>
-    <ListInput
-      outline
-      label="Amount"
-      floatingLabel
-      type="text"
-      placeholder="MO"
-      onInput={onInputAmount}
-    >
-      <IconCurrencyUsd slot="media" />
-    </ListInput>
+    {#if $storeCurrency.currency === "idr"}
+      <ListInput
+        outline
+        label="Amount"
+        floatingLabel
+        type="text"
+        placeholder="MO"
+        onInput={onInputAmount}
+      >
+        <IconCurrencyIdr slot="media" />
+      </ListInput>
+    {:else if $storeCurrency.currency === "usd"}
+      <ListInput
+        outline
+        label="Amount"
+        floatingLabel
+        type="text"
+        placeholder="MO"
+        onInput={onInputAmount}
+      >
+        <IconCurrencyUsd slot="media" />
+      </ListInput>
+    {/if}
   </List>
 </Block>
