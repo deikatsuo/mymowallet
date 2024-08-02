@@ -42,7 +42,7 @@
   };
   const hash = window.location.hash.slice(1);
   const tgData = new URLSearchParams(hash);
-  const params = new URLSearchParams(tgData);
+  const params = new URLSearchParams(tgData.get("tgWebAppData"));
 
   console.log("Hash ", hash);
   console.log("Params ", params);
