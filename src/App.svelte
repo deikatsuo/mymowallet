@@ -46,9 +46,10 @@
   console.log("Hash ", hash);
   console.log("Params ", params);
   console.log("tgWebAppStartParam ", params.get("tgWebAppStartParam"));
+  console.log("start_param ", params.get("start_param"));
 
-  if (params.get("tgWebAppStartParam")) {
-    navigate("/wallet/transfer/" + params.get("tgWebAppStartParam"));
+  if (params.get("start_param")) {
+    navigate("/wallet/transfer/" + params.get("start_param"));
   }
 </script>
 
