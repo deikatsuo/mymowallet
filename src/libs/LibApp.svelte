@@ -89,6 +89,9 @@
   <Router>
     <Route path="/" component={PageWallet} />
     <Route path="/wallet/transfer" component={PageWalletTransfer} />
+    <Route path="/wallet/transfer/:to" let:params>
+      <PageWalletTransfer transferTo="{params.to}" />
+  </Route>
     <Route path="/staking" component={PageStaking} />
     <Route path="/setting" component={PageSetting} />
     <Route component={PageNotFound} />

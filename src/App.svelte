@@ -1,6 +1,5 @@
 <script>
   import WebApp from "@twa-dev/sdk";
-  import { ethers } from "ethers";
   import {
     App,
     Page,
@@ -41,6 +40,12 @@
   const onPasswordValueChange = (e) => {
     $storePassword.password = e.target.value;
   };
+  const hash = window.location.hash.slice(1);
+  const params = new URLSearchParams(hash);
+
+  if (params.get("transferTo")) {
+    navigate("/wallet/transfer/" + params.get("transferTo"));
+  }
 </script>
 
 <svelte:head>

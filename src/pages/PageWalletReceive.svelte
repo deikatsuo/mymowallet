@@ -3,7 +3,7 @@
   import QRCodeStyling from "qr-code-styling";
   import { storeActiveWallet, storeCurrency, storeToast } from "../stores";
   import IconCurrencyUsd from "../components/IconCurrencyUsd.svelte";
-  import { copyText, validAmount } from "../utils";
+  import { copyText, fromHex, toHex, validAmount } from "../utils";
   import IconCurrencyIdr from "../components/IconCurrencyIdr.svelte";
 
   let amount;
@@ -25,10 +25,11 @@
       }, 3000);
     } else {
       if (e > 0) {
-        amount = e;
+        amount = toHex(e);
       } else {
         amount = 0;
       }
+
       generateQR();
     }
   };
@@ -38,7 +39,7 @@
       width: 300,
       height: 300,
       type: "svg",
-      data: data + "-" + amount,
+      data: data + amount,
       image: "/mymowallet.svg",
       dotsOptions: {
         color: "#4267b2",
