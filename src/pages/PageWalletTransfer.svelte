@@ -1,7 +1,11 @@
 <script>
   import WebApp from "@twa-dev/sdk";
   import { navigate } from "svelte-routing";
-  import { storeTitle, storeActiveWallet } from "../stores";
+  import {
+    storeTitle,
+    storeActiveWallet,
+    storeEncryptedPassword,
+  } from "../stores";
   import { Block, BlockTitle, Fab, List, ListInput } from "konsta/svelte";
 
   import IconMo from "../components/IconMo.svelte";
@@ -12,6 +16,14 @@
 
   WebApp.BackButton.onClick(() => navigate("/"));
   WebApp.BackButton.show();
+
+  let transferFrom = $storeEncryptedPassword ? $storeActiveWallet.wallet.address : "0x";
+
+  storeEncryptedPassword.subscribe((v) => {
+    if (v) {
+      transferFrom = $storeActiveWallet.wallet.address;
+    }
+  });
 
   export let transferTo;
 </script>
@@ -30,7 +42,7 @@
     floatingLabel
     type="text"
     placeholder="0x..."
-    value={$storeActiveWallet.wallet.address}
+    value={transferFrom}
     disabled
   >
     <IconMo
@@ -57,6 +69,8 @@
   </ListInput>
 </List>
 
-<Fab class="fixed right-4-safe ios:bottom-16-safe bottom- material:bottom-24-safe z-20">
+<Fab
+  class="fixed right-4-safe ios:bottom-16-safe bottom- material:bottom-24-safe z-20"
+>
   <IconQrScan slot="icon" />
 </Fab>
