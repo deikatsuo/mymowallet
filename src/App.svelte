@@ -47,6 +47,7 @@
   console.log("Params ", params);
   console.log("tgWebAppStartParam ", params.get("tgWebAppStartParam"));
   console.log("start_param ", params.get("start_param"));
+  console.log("tgWebAppData ", params.get("tgWebAppData"));
 
   if (params.get("start_param")) {
     navigate("/wallet/transfer/" + params.get("start_param"));
