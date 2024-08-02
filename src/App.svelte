@@ -41,7 +41,8 @@
     $storePassword.password = e.target.value;
   };
   const hash = window.location.hash.slice(1);
-  const params = new URLSearchParams(hash);
+  const tgData = new URLSearchParams(hash);
+  const params = new URLSearchParams(tgData);
 
   console.log("Hash ", hash);
   console.log("Params ", params);
