@@ -6,11 +6,11 @@
   import { copyText, fromHex, toHex, validAmount } from "../utils";
   import IconCurrencyIdr from "../components/IconCurrencyIdr.svelte";
 
-  let amount;
+  let amount = "0";
   let qrBlobURL;
 
   let data =
-    "https://t.me/mymowallet_bot/app?transferTo=" +
+    "https://t.me/mymowallet_bot/app?startapp=" +
     $storeActiveWallet.wallet.address;
 
   const onInputAmount = (e) => {

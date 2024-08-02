@@ -43,8 +43,8 @@
   const hash = window.location.hash.slice(1);
   const params = new URLSearchParams(hash);
 
-  if (params.get("transferTo")) {
-    navigate("/wallet/transfer/" + params.get("transferTo"));
+  if (params.get("tgWebAppStartParam")) {
+    navigate("/wallet/transfer/" + params.get("tgWebAppStartParam"));
   }
 </script>
 
