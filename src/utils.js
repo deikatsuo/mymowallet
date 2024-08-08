@@ -1,5 +1,4 @@
 import { get } from "svelte/store";
-import WebApp from "@twa-dev/sdk";
 import { storeAlert, storeLocalPrefix, storeToast } from "./stores";
 
 export function setLocalStorage(s, v) {

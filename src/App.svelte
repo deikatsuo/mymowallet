@@ -49,9 +49,6 @@
   if (params.get("start_param")) {
     navigate("/wallet/transfer/" + params.get("start_param"));
   }
-
-
-  console.log({ ...localStorage });
 </script>
 
 <svelte:head>
