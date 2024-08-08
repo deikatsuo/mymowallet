@@ -1,5 +1,18 @@
+import { get } from "svelte/store";
 import WebApp from "@twa-dev/sdk";
-import { storeAlert, storeToast } from "./stores";
+import { storeAlert, storeLocalPrefix, storeToast } from "./stores";
+
+export function setLocalStorage(s, v) {
+  localStorage.setItem(`${get(storeLocalPrefix)}${s}`, v);
+}
+
+export function getLocalStorage(s) {
+  return localStorage.getItem(`${get(storeLocalPrefix)}${s}`);
+}
+
+export function removeLocalStorage(s) {
+  localStorage.removeItem(`${get(storeLocalPrefix)}${s}`);
+}
 
 export function truncateAddress(address = "0x") {
   let endChars = 5;

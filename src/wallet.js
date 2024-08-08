@@ -11,6 +11,7 @@ import {
   storeCurrency,
 } from "./stores";
 import { Wallet } from "ethers";
+import { getLocalStorage, setLocalStorage } from "./utils";
 
 export const moProvider = ethers.getDefaultProvider(
   "https://mainnet-rpc.mochain.app"
@@ -47,17 +48,18 @@ export function encryptAndBuild(seed, password) {
   let encSeed = encryptSeed(seed, encPassword);
 
   storeEncryptedPassword.set(encPassword);
-  localStorage.salt = salt;
-  localStorage.seed = encSeed;
-  localStorage.login = true;
+
+  setLocalStorage("salt", salt);
+  setLocalStorage("seed", encSeed);
+  setLocalStorage("login", true);
 
   buildWalletFromSeed(seed);
 }
 
 export function decryptAndBuild(password) {
-  let salt = localStorage.salt;
+  let salt = getLocalStorage("salt");
   let encPassword = encryptPassword(password, salt);
-  let encSeed = localStorage.seed;
+  let encSeed = getLocalStorage("seed");
 
   let decSeed = decryptSeed(encSeed, encPassword);
   if (!decSeed) {
@@ -78,7 +80,7 @@ export function buildWalletFromSeed(seed) {
   let activeType;
   let activeNumber;
   wallets.some((w) => {
-    if (w.active === true){
+    if (w.active === true) {
       isExistActive = true;
       activeNumber = w.number;
       activeType = w.type;
@@ -95,10 +97,11 @@ export function buildWalletFromSeed(seed) {
     } else {
       // not implemented
     }
-    
   }
 
-  storeIsLogin.set(localStorage.login);
+  storeIsLogin.set(
+    getLocalStorage("login") === "true" || getLocalStorage("login") === "false"
+  );
 }
 
 export function buildChildWallet(number = -1) {
@@ -115,7 +118,7 @@ export function buildChildWallet(number = -1) {
 
 export function nthChild() {
   let child = 0;
-  let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
+  let wallets = getLocalStorage('wallets') ? JSON.parse(getLocalStorage('wallets')) : [];
   wallets.some((wallet) => {
     if (wallet.type === "child") {
       child += 1;
@@ -133,7 +136,9 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
     active: false,
     balance: 0,
   };
-  let wallets = localStorage.wallets ? JSON.parse(localStorage.wallets) : [];
+  let wallets = getLocalStorage("wallets")
+    ? JSON.parse(getLocalStorage("wallets"))
+    : [];
   if (wallets.length > 0) {
     const isAddressExists = wallets.some((item) => item.address === address);
     if (!isAddressExists) {
@@ -147,8 +152,8 @@ export function addWallet(address, type = "parent", number = -1, key = "") {
 }
 
 function updateLocalStorageWallets(wallets) {
-  localStorage.wallets = JSON.stringify(wallets);
-  storeWallets.set(JSON.parse(localStorage.wallets));
+  setLocalStorage("wallets", JSON.stringify(wallets));
+  storeWallets.set(JSON.parse(getLocalStorage("wallets")));
 }
 
 export function setStoreActiveWallet(

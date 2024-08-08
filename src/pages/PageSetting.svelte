@@ -16,6 +16,7 @@
   import IconSetting from "../components/IconSetting.svelte";
   import PageSettingCurrency from "./PageSettingCurrency.svelte";
   import PageSettingTheme from "./PageSettingTheme.svelte";
+  import { getLocalStorage } from "../utils";
 
   $storeTitle = "Setting";
   $storeActiveTab = "setting";
@@ -44,7 +45,7 @@
 
     let encPassword = encryptPassword(
       $storePassword.password,
-      localStorage.salt
+      getLocalStorage('salt')
     );
 
     if (encPassword !== $storeEncryptedPassword) {

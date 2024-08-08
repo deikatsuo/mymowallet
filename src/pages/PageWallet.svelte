@@ -39,7 +39,7 @@
     setStoreActiveWallet,
     updateBalance,
   } from "../wallet";
-  import { copyText, truncateAddress } from "../utils";
+  import { copyText, getLocalStorage, setLocalStorage, truncateAddress } from "../utils";
   import IconBitcoinWallet from "../components/IconBitcoinWallet.svelte";
   import IconCopy from "../components/IconCopy.svelte";
   import { navigate } from "svelte-routing";
@@ -50,13 +50,15 @@
 
   WebApp.BackButton.hide();
 
-  if (localStorage.localPrice) {
-    $storePrice = JSON.parse(localStorage.localPrice);
+  if (getLocalStorage("local_price")) {
+    $storePrice = JSON.parse(getLocalStorage("local_price"));
   }
 
   function getPrice() {
-    if (localStorage.lastPriceUpdate) {
-      const lastUpdateDate = new Date(JSON.parse(localStorage.lastPriceUpdate));
+    if (getLocalStorage("last_price_update")) {
+      const lastUpdateDate = new Date(
+        JSON.parse(getLocalStorage("last_price_update"))
+      );
       const nowUpdateDate = new Date();
 
       const differenceInMs = nowUpdateDate - lastUpdateDate;
@@ -89,8 +91,8 @@
         } else if ($storeCurrency.currency === "usd") {
           $storePrice = data["mo-chain"].usd;
         }
-        localStorage.localPrice = JSON.stringify($storePrice);
-        localStorage.lastPriceUpdate = Date.now();
+        setLocalStorage('local_price', JSON.stringify($storePrice));
+        setLocalStorage('last_price_update', Date.now());
       })
       .catch((error) => {
         console.error("Error fetching data:", error.message);

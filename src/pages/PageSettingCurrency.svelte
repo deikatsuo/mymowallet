@@ -3,6 +3,7 @@
   import IconCurrencyIdr from "../components/IconCurrencyIdr.svelte";
   import IconCurrencyUsd from "../components/IconCurrencyUsd.svelte";
   import { storeCurrency, storePrice } from "../stores";
+  import { removeLocalStorage, setLocalStorage } from "../utils";
 
   let currencies = [
     { value: "idr", view: "Indonesian Rupiah" },
@@ -20,11 +21,11 @@
 
     $storeCurrency = { currency: e.target.value, symbol: symbol };
 
-    localStorage.localCurrency = JSON.stringify($storeCurrency);
+    setLocalStorage('local_currency', JSON.stringify($storeCurrency));
 
     $storePrice = 0;
-    localStorage.removeItem("localPrice");
-    localStorage.removeItem("lastPriceUpdate");
+    removeLocalStorage('local_price');
+    removeLocalStorage('last_price_update')
   };
 </script>
 
