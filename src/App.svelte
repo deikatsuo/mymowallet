@@ -27,6 +27,7 @@
     storePassword,
     storeCallback,
     storeDestroy,
+    storeLocalPrefix,
   } from "./stores";
 
   import IconPasswordAdd from "./components/IconPasswordAdd.svelte";
@@ -36,6 +37,12 @@
   WebApp.setHeaderColor("secondary_bg_color");
   WebApp.setBackgroundColor("secondary_bg_color");
   WebApp.expand();
+
+  if (WebApp.initDataUnsafe.user) {
+    $storeLocalPrefix = "mymowallet_tg_"+ WebApp.initDataUnsafe.user.id;
+  } else {
+    $storeLocalPrefix = "mymowallet_tg_0";
+  }
 
   const onPasswordValueChange = (e) => {
     $storePassword.password = e.target.value;
@@ -47,6 +54,8 @@
   if (params.get("start_param")) {
     navigate("/wallet/transfer/" + params.get("start_param"));
   }
+
+  console.log($storeLocalPrefix);
 </script>
 
 <svelte:head>

@@ -34,3 +34,4 @@ export const storeCurrency = writable({
 export const storeDestroy = writable(false);
 export const storePrice = writable(0);
 export const storeBalance = writable(0);
+export const storeLocalPrefix = writable("");
